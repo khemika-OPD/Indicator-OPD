@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPD Takhli - 6 Dimensions Indicators</title>
+    
+    <!-- ระบบสไตล์ภายในไฟล์ (Pure CSS) ป้องกันการโดน Firewall โรงพยาบาลบล็อก -->
     <style>
         * {
             box-sizing: border-box;
@@ -164,7 +166,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* โครงสร้างตารางแสดงรายการตัวชี้วัด */
+        /* โครงสร้างเนื้อหาในแท็บ */
         .tab-content {
             display: none;
             background-color: #ffffff;
@@ -182,39 +184,83 @@
             color: #0f766e;
             margin-bottom: 16px;
             padding-bottom: 8px;
-            border-b: 2px solid #ccfbf1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-bottom: 2px solid #ccfbf1;
         }
-        .kpi-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            margin-top: 12px;
+        
+        /* สไตล์ของการ์ดตัวชี้วัดย่อย */
+        .kpi-card {
+            padding: 16px; 
+            border-radius: 8px; 
+            margin-bottom: 16px; 
+            border-left: 4px solid #ced4da;
         }
-        .kpi-table th, .kpi-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
+        .kpi-card h4 {
+            font-size: 1rem;
+            font-weight: bold; 
+            margin-bottom: 4px; 
+            color: #1f2937;
+        }
+        .kpi-card h5 {
             font-size: 0.95rem;
+            font-weight: bold; 
+            margin-bottom: 4px; 
+            color: #1f2937;
         }
-        .kpi-table th {
-            background-color: #f9fafb;
-            color: #4b5563;
+        .kpi-card p {
+            font-size: 0.85rem; 
+            color: #6b7280; 
+            margin-bottom: 12px;
+        }
+        .teal-accent { border-left-color: #0d9488; }
+        .red-accent { border-left-color: #dc2626; }
+        
+        .calc-row {
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+            align-items: flex-end;
+        }
+        .calc-row label {
+            display:block; 
+            font-size: 0.8rem; 
+            margin-bottom: 4px;
+        }
+        .calc-row input {
+            width: 130px; 
+            padding: 6px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .calc-row button {
+            padding: 7px 14px; 
+            background-color: #0d9488; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
             font-weight: bold;
-            width: 75%;
+            font-size: 0.9rem;
         }
-        .kpi-table tr:hover {
-            background-color: #f9fafb;
+        .calc-row button:hover {
+            background-color: #0f766e;
         }
-        .looker-link {
-            color: #0d9488;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
+        .result {
+            font-size: 1rem; 
+            font-weight: bold; 
+            margin-left: 10px;
         }
-        .looker-link:hover {
-            text-decoration: underline;
+        .dashboard-link {
+            margin-top: 24px; 
+            text-align: right; 
+            border-top: 1px solid #e5e7eb; 
+            padding-top: 16px;
+        }
+        .dashboard-link a {
+            color: #0d9488; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 0.9rem;
         }
 
         footer {
@@ -224,6 +270,7 @@
             padding: 16px;
             font-size: 0.875rem;
             border-top: 1px solid #374151;
+            margin-top: auto;
         }
     </style>
 </head>
@@ -233,7 +280,7 @@
     <header>
         <div class="header-container">
             <div class="header-title">
-                <h1>1. แดชบอร์ดระบบงานตัวชี้วัดกองการพยาบาล</h1>
+                <h1>ระบบงานตัวชี้วัดผลลัพธ์คุณภาพการพยาบาล (KPIs)</h1>
             </div>
             <a href="index.html" class="back-btn">⬅️ กลับหน้าหลัก</a>
         </div>
@@ -276,111 +323,425 @@
                 <button class="tab-btn" onclick="switchTab(event, 'dim6')">มิติที่ 6 การบริการพยาบาล</button>
             </div>
 
-            <!-- รายละเอียดเนื้อหาแต่ละมิติ (อ้างอิงตรงตามคู่มือกองการพยาบาล หน้า 91-92) -->
-            
-            <!-- แท็บมิติที่ 1 -->
+            <!-- ==================== มิติที่ 1 ==================== -->
             <div id="dim1" class="tab-content active">
                 <div class="m集中-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร</div>
-                <table class="kpi-table">
-                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
-                    <tbody>
-                        <tr><td>1. ร้อยละของตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>2. ร้อยละของโครงการ/กิจกรรมดําเนินการตามกระบวนการควบคุมภายในที่มีคะแนนความเสี่ยงลดลง</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>3. ร้อยละของบุคลากรพยาบาลที่มีผลการประเมินจริยธรรมจรรยาบรรณวิชาชีพผ่านเกณฑ์ที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                    </tbody>
-                </table>
+                
+                <div class="kpi-card teal-accent">
+                    <h4>1. ร้อยละของตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> ผลลัพธ์ดีกว่าค่าเป้าหมายที่เชื่อมโยงกับวิสัยทัศน์องค์กรพยาบาล</p>
+                    <div class="calc-row">
+                        <div><label>ตัวชี้วัดวิสัยทัศน์ที่บรรลุ (A)</label><input type="number" id="dim1_kpi1_A"></div>
+                        <div><label>ตัวชี้วัดวิสัยทัศน์ทั้งหมด (B)</label><input type="number" id="dim1_kpi1_B"></div>
+                        <button onclick="calKpi1()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_kpi1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>2. ร้อยละของโครงการ/กิจกรรมดําเนินการตามกระบวนการควบคุมภายในที่มีคะแนนความเสี่ยงลดลง (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> โครงการ/กิจกรรมตาม แบบ ปค.5 ที่มีคะแนนความเสี่ยงหลังดำเนินการลดลง</p>
+                    <div class="calc-row">
+                        <div><label>โครงการที่ความเสี่ยงลดลง (A)</label><input type="number" id="dim1_kpi2_A"></div>
+                        <div><label>โครงการควบคุมภายในทั้งหมด (B)</label><input type="number" id="dim1_kpi2_B"></div>
+                        <button onclick="calKpi2()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_kpi2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>3. ร้อยละของบุคลากรพยาบาลที่มีผลการประเมินจริยธรรมจรรยาบรรณวิชาชีพผ่านเกณฑ์ (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> พยาบาลวิชาชีพที่มีคะแนนประเมินจริยธรรมสภาการพยาบาล ทุกรายข้ออยู่ระหว่าง 3–5 คะแนน</p>
+                    <div class="calc-row">
+                        <div><label>พยาบาลที่ผ่านเกณฑ์ (A)</label><input type="number" id="dim1_kpi3_A"></div>
+                        <div><label>จำนวนพยาบาลทั้งหมด (B)</label><input type="number" id="dim1_kpi3_B"></div>
+                        <button onclick="calKpi3()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_kpi3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-link"><a href="#" target="_blank">🔗 เปิดรายงานแดชบอร์ดสรุปภาพรวม (Looker Studio) ↗️</a></div>
             </div>
 
-            <!-- แท็บมิติที่ 2 -->
+            <!-- ==================== มิติที่ 2 ==================== -->
             <div id="dim2" class="tab-content">
                 <div class="m集中-title">⚡ มิติที่ 2 ผลลัพธ์ด้านประสิทธิภาพ</div>
-                <table class="kpi-table">
-                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
-                    <tbody>
-                        <tr><td>1. ผลิตภาพของงานการพยาบาลผู้ป่วยนอก (Nursing Productivity)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>2. ระยะเวลารอคอยบริการพยาบาลผู้ป่วยนอกเฉลี่ย</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>3. ร้อยละของบุคลากรพยาบาลที่มีจํานวนชั่วโมงการปฏิบัติงานการพยาบาลเฉลี่ยมากกว่า 60 ชั่วโมงต่อสัปดาห์</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>4. ร้อยละของอุบัติการณ์/ความเสี่ยงทางการพยาบาลได้รับการจัดการทันเวลาตามที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                    </tbody>
-                </table>
+                
+                <div class="kpi-card teal-accent">
+                    <h4>1. ผลิตภาพของงานการพยาบาลผู้ป่วยนอก (Nursing Productivity) (เป้าหมาย 90 - 110%)</h4>
+                    <p><strong>นิยาม:</strong> สัดส่วนร้อยละระหว่างชั่วโมงความต้องการการพยาบาลกับชั่วโมงปฏิบัติการพยาบาลจริง</p>
+                    <div class="calc-row">
+                        <div><label>ชั่วโมงความต้องการพยาบาล (A)</label><input type="number" id="dim2_kpi1_A"></div>
+                        <div><label>ชั่วโมงปฏิบัติงานของพยาบาล (B)</label><input type="number" id="dim2_kpi1_B"></div>
+                        <button onclick="calDim2Kpi1()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim2_kpi1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>2. ระยะเวลารอคอยบริการพยาบาลผู้ป่วยนอกเฉลี่ย (เป้าหมาย ตามบริบทหน่วยงาน)</h4>
+                    <p><strong>นิยาม:</strong> จำนวนนาทีที่รอคอยบริการพยาบาล (คัดกรอง ซักประวัติ วัดสัญญาณชีพ ให้คำแนะนำ ฉีดยา/หัตถการ)</p>
+                    <div class="calc-row">
+                        <div><label>รวมเวลารอคอยทั้งหมด (A)</label><input type="number" id="dim2_kpi2_A"></div>
+                        <div><label>จำนวนผู้ป่วยนอกทั้งหมด (B)</label><input type="number" id="dim2_kpi2_B"></div>
+                        <button onclick="calDim2Kpi2()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim2_kpi2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>3. ร้อยละของบุคลากรพยาบาลที่มีชั่วโมงทำงานเฉลี่ย > 60 ชั่วโมงต่อสัปดาห์ (เป้าหมาย = 0%)</h4>
+                    <p><strong>นิยาม:</strong> นับชั่วโมงการปฏิบัติงานดูแลผู้ป่วยโดยตรง (Direct care) ทั้งในและนอกเวลาราชการเฉลี่ยต่อสัปดาห์</p>
+                    <div class="calc-row">
+                        <div><label>พยาบาลที่ทำงาน > 60 ชม. (A)</label><input type="number" id="dim2_kpi3_A"></div>
+                        <div><label>จำนวนบุคลากรพยาบาลทั้งหมด (B)</label><input type="number" id="dim2_kpi3_B"></div>
+                        <button onclick="calDim2Kpi3()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim2_kpi3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>4. ร้อยละของอุบัติการณ์/ความเสี่ยงทางการพยาบาลได้รับการจัดการทันเวลา (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> ได้รับการดำเนินการจัดการ/แก้ไขตามแนวทางปฏิบัติ และเสร็จสิ้นภายในเวลาที่กำหนด</p>
+                    <div class="calc-row">
+                        <div><label>ความเสี่ยงที่จัดการทันเวลา (A)</label><input type="number" id="dim2_kpi4_A"></div>
+                        <div><label>อุบัติการณ์ความเสี่ยงทั้งหมด (B)</label><input type="number" id="dim2_kpi4_B"></div>
+                        <button onclick="calDim2Kpi4()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim2_kpi4">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-link"><a href="#" target="_blank">🔗 เปิดรายงานแดชบอร์ดสรุปภาพรวม (Looker Studio) ↗️</a></div>
             </div>
 
-            <!-- แท็บมิติที่ 3 -->
+            <!-- ==================== มิติที่ 3 ==================== -->
             <div id="dim3" class="tab-content">
                 <div class="m集中-title">❤️ มิติที่ 3 ผลลัพธ์ด้านผู้ใช้บริการ</div>
-                <table class="kpi-table">
-                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
-                    <tbody>
-                        <tr><td>1. ร้อยละความพึงพอใจของผู้ใช้บริการต่อบริการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>2. ร้อยละความพึงพอใจของผู้มีส่วนได้ส่วนเสียต่อหน่วยงานบริการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>3. ร้อยละความไม่พึงพอใจของผู้ใช้บริการต่อบริการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>4. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับสิทธิหรือการละเมิดสิทธิผู้ใช้บริการ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>5. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับสิทธิหรือการละเมิดสิทธิผู้ใช้บริการกลุ่มเฉพาะ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>6. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับพฤติกรรมบริการของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>7. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับการละเมิดข้อมูลส่วนบุคคล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>8. ร้อยละของการแก้ไขและ/หรือการตอบกลับข้อร้องเรียนของผู้ใช้บริการ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                    </tbody>
-                </table>
+                
+                <div class="kpi-card teal-accent">
+                    <h4>1. ร้อยละความพึงพอใจของผู้ใช้บริการต่อบริการพยาบาล (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> คะแนนความคิดเห็นจากแบบประเมินความพึงพอใจต่อบริการพยาบาลที่กำหนด</p>
+                    <div class="calc-row">
+                        <div><label>คะแนนรวมที่ได้ (A)</label><input type="number" id="dim3_kpi1_A"></div>
+                        <div><label>คะแนนเต็มรวม (B)</label><input type="number" id="dim3_kpi1_B"></div>
+                        <button onclick="calDim3Kpi1()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim3_kpi1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>2. ร้อยละความพึงพอใจของผู้มีส่วนได้ส่วนเสียต่อหน่วยงาน (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> คะแนนความคิดเห็นของผู้มีส่วนได้ส่วนเสียต่อหน่วยงานบริการพยาบาลที่กำหนด</p>
+                    <div class="calc-row">
+                        <div><label>คะแนนรวมที่ได้ (A)</label><input type="number" id="dim3_kpi2_A"></div>
+                        <div><label>คะแนนเต็มรวม (B)</label><input type="number" id="dim3_kpi2_B"></div>
+                        <button onclick="calDim3Kpi2()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim3_kpi2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card red-accent">
+                    <h4>3. ร้อยละความไม่พึงพอใจของผู้ใช้บริการต่อบริการพยาบาล (เป้าหมาย < 5%)</h4>
+                    <p><strong>นิยาม:</strong> จำนวนข้อ/รายการที่ผู้ใช้บริการระบุว่าไม่พึงพอใจต่อบริการพยาบาลในแบบสอบถามทั้งหมด</p>
+                    <div class="calc-row">
+                        <div><label>ข้อที่ไม่พึงพอใจ (A)</label><input type="number" id="dim3_kpi3_A"></div>
+                        <div><label>ข้อรวมทั้งหมด (B)</label><input type="number" id="dim3_kpi3_B"></div>
+                        <button onclick="calDim3Kpi3()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim3_kpi3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card red-accent">
+                    <h4>4-7. จำนวนข้อร้องเรียน (สิทธิผู้ป่วย, กลุ่มเฉพาะ, พฤติกรรมบริการ, ละเมิดข้อมูลส่วนบุคคล PDCA) (เป้าหมาย = 0)</h4>
+                    <p><strong>นิยาม:</strong> จำนวนข้อร้องเรียนรวมจากช่องทางต่าง ๆ ในด้านการละเมิดสิทธิ, พฤติกรรมบริการ หรือกฎหมาย PDCA</p>
+                    <div class="calc-row">
+                        <div><label>ข้อร้องเรียนที่เกิดขึ้นทั้งหมด</label><input type="number" id="dim3_kpi4_A" placeholder="จำนวนข้อ"></div>
+                        <button onclick="calDim3Kpi4()">คำนวณผลตรวจ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim3_kpi4">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>8. ร้อยละของการแก้ไขและ/หรือการตอบกลับข้อร้องเรียนของผู้ใช้บริการ (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> การดำเนินการจัดการ แก้ไข และตอบกลับข้อร้องเรียนเสร็จสิ้นครบถ้วนตามแนวทางปฏิบัติ</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนที่แก้ไขสำเร็จ (A)</label><input type="number" id="dim3_kpi8_A"></div>
+                        <div><label>จำนวนข้อร้องเรียนทั้งหมด (B)</label><input type="number" id="dim3_kpi8_B"></div>
+                        <button onclick="calDim3Kpi8()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim3_kpi8">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-link"><a href="#" target="_blank">🔗 เปิดรายงานแดชบอร์ดสรุปภาพรวม (Looker Studio) ↗️</a></div>
             </div>
 
-            <!-- แท็บมิติที่ 4 -->
+            <!-- ==================== มิติที่ 4 ==================== -->
             <div id="dim4" class="tab-content">
                 <div class="m集中-title">🧑‍⚕️ มิติที่ 4 ผลลัพธ์ด้านบุคลากร</div>
-                <table class="kpi-table">
-                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
-                    <tbody>
-                        <tr><td>1. ร้อยละความผูกพันของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>2. ร้อยละความพึงพอใจในงานและบรรยากาศองค์กรของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>3. ร้อยละการโอนย้ายและลาออกของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>4. ร้อยละของบุคลากรพยาบาลมีสมรรถนะตามบทบาทหน้าที่และสมรรถนะเฉพาะตามเกณฑ์ที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>5. ร้อยละของบุคลากรพยาบาลได้รับการอบรมฟื้นฟูทักษะการช่วยฟื้นคืนชีพขั้นพื้นฐานอย่างน้อย 1 ครั้งต่อปี</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>6. ร้อยละของบุคลากรพยาบาลได้รับการอบรมฟื้นฟูทักษะการช่วยฟื้นคืนชีพขั้นสูงอย่างน้อย 1 ครั้งต่อปี</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>7. ร้อยละของบุคลากรพยาบาลได้รับการอบรมฟื้นฟูทักษะการป้องกันและควบคุมการติดเชื้อในโรงพยาบาลอย่างน้อย 1 ครั้งต่อปี</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>8. ร้อยละของบุคลากรพยาบาลที่ได้รับการตรวจสุขภาพประจําปีและตามความเสี่ยงจากการทํางาน</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>9. ร้อยละของบุคลากรพยาบาลที่เจ็บป่วยหรือเกิดอุบัติเหตุจากการปฏิบัติงานได้รับการดูแลตามแนวทางการดูแลรักษา</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                    </tbody>
-                </table>
+                
+                <div class="kpi-card teal-accent">
+                    <h4>1. ร้อยละความผูกพันของบุคลากรพยาบาล (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> คะแนนความคิดเห็นของพยาบาลวิชาชีพจากแบบประเมินความผูกพันองค์กรที่กำหนด</p>
+                    <div class="calc-row">
+                        <div><label>คะแนนรวมที่ได้ (A)</label><input type="number" id="dim4_kpi1_A"></div>
+                        <div><label>คะแนนเต็มรวม (B)</label><input type="number" id="dim4_kpi1_B"></div>
+                        <button onclick="calDim4Kpi1()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim4_kpi1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>2. ร้อยละความพึงพอใจในงานและบรรยากาศองค์กร (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> คะแนนความคิดเห็นพยาบาลวิชาชีพจากแบบประเมินความพึงพอใจในงานและบรรยากาศองค์กร</p>
+                    <div class="calc-row">
+                        <div><label>คะแนนรวมที่ได้ (A)</label><input type="number" id="dim4_kpi2_A"></div>
+                        <div><label>คะแนนเต็มรวม (B)</label><input type="number" id="dim4_kpi2_B"></div>
+                        <button onclick="calDim4Kpi2()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim4_kpi2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card red-accent">
+                    <h4>3. ร้อยละการโอนย้ายและลาออกของบุคลากรพยาบาล (เป้าหมาย &le; 1%)</h4>
+                    <p><strong>นิยาม:</strong> จำนวนพยาบาลวิชาชีพงานผู้ป่วยนอก ที่โอน ย้าย หรือลาออก สิ้นปี ณ วันที่ 30 กันยายน</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนที่ลาออก/โอนย้าย (A)</label><input type="number" id="dim4_kpi3_A"></div>
+                        <div><label>พยาบาลทั้งหมด ณ 30 ก.ย. (B)</label><input type="number" id="dim4_kpi3_B"></div>
+                        <button onclick="calDim4Kpi3()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim4_kpi3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>4. ร้อยละของบุคลากรพยาบาลมีสมรรถนะตามบทบาทหน้าที่และสมรรถนะเฉพาะ (เป้าหมาย = 100%)</h4>
+                    <p><strong>นิยาม:</strong> มีผลประเมิน Functional & Specific competency อยู่ในระดับที่คาดหวังหรือสูงกว่า</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนพยาบาลที่มีสมรรถนะ (A)</label><input type="number" id="dim4_kpi4_A"></div>
+                        <div><label>บุคลากรพยาบาลทั้งหมด (B)</label><input type="number" id="dim4_kpi4_B"></div>
+                        <button onclick="calDim4Kpi4()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim4_kpi4">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>5-7. อบรม CPR พื้นฐาน (เป้า: 100%), CPR ขั้นสูง (เป้า: &ge; 80%), อบรมควบคุมการติดเชื้อ (เป้า: 100%)</h4>
+                    <p><strong>นิยาม:</strong> พยาบาลวิชาชีพที่ได้รับการอบรมฟื้นฟูทักษะแต่ละด้านอย่างน้อย 1 ครั้งต่อปี</p>
+                    <div class="calc-row" style="background:#f9fafb; padding:10px; border-radius:6px; border: 1px solid #e5e7eb;">
+                        <div><label>อบรม CPR พื้นฐาน (A5)</label><input type="number" id="dim4_kpi5_A" placeholder="คน" style="width:110px;"></div>
+                        <div><label>อบรม CPR ขั้นสูง (A6)</label><input type="number" id="dim4_kpi6_A" placeholder="คน" style="width:110px;"></div>
+                        <div><label>อบรมควบคุมการติดเชื้อ (A7)</label><input type="number" id="dim4_kpi7_A" placeholder="คน" style="width:110px;"></div>
+                        <div><label>จำนวนพยาบาลทั้งหมด (B)</label><input type="number" id="dim4_kpi_staff_B" placeholder="คน" style="width:110px;"></div>
+                        <button onclick="calDim4CprAndInfection()">คำนวณรวม</button>
+                    </div>
+                    <div style="margin-top:8px; font-size:0.9rem; font-weight:bold; line-height:1.6;">
+                        • สรุปผล CPR พื้นฐาน: <span id="res_dim4_kpi5">-</span><br>
+                        • สรุปผล CPR ขั้นสูง: <span id="res_dim4_kpi6">-</span><br>
+                        • สรุปผลอบรมติดเชื้อใน รพ.: <span id="res_dim4_kpi7">-</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>8. ร้อยละของบุคลากรพยาบาลที่ได้รับการตรวจสุขภาพประจำปีและตามความเสี่ยง (เป้าหมาย = 100%)</h4>
+                    <p><strong>นิยาม:</strong> ต้องได้รับการตรวจครบถ้วนทั้งการตรวจสุขภาพประจำปีและการตรวจสุขภาพตามความเสี่ยงจากลักษณะงาน</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนพยาบาลที่ตรวจครบ (A)</label><input type="number" id="dim4_kpi8_A"></div>
+                        <div><label>บุคลากรพยาบาลทั้งหมด (B)</label><input type="number" id="dim4_kpi8_B"></div>
+                        <button onclick="calDim4Kpi8()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim4_kpi8">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>9. ร้อยละของบุคลากรพยาบาลที่เจ็บป่วย/อุบัติเหตุได้รับการดูแลตามแนวทาง (เป้าหมาย = 100%)</h4>
+                    <p><strong>นิยาม:</strong> พยาบาลวิชาชีพกลุ่มป่วย หรือเกิดอุบัติเหตุจากการทำงาน ได้รับการดูแลรักษาตามแนวทาง</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนเคสที่ได้รับการดูแล (A)</label><input type="number" id="dim4_kpi9_A"></div>
+                        <div><label>จำนวนเคสเจ็บป่วยทั้งหมด (B)</label><input type="number" id="dim4_kpi9_B"></div>
+                        <button onclick="calDim4Kpi9()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim4_kpi9">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-link"><a href="#" target="_blank">🔗 เปิดรายงานแดชบอร์ดสรุปภาพรวม (Looker Studio) ↗️</a></div>
             </div>
 
-            <!-- แท็บมิติที่ 5 -->
+            <!-- ==================== มิติที่ 5 ==================== -->
             <div id="dim5" class="tab-content">
                 <div class="m集中-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ</div>
-                <table class="kpi-table">
-                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
-                    <tbody>
-                        <tr><td>1. ร้อยละของบุคลากรพยาบาลที่ปฏิบัติตามแนวทางปฏิบัติการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐานการพยาบาลในโรงพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>3. ร้อยละของอุบัติการณ์ภัยพิบัติหรือภาวะฉุกเฉินได้รับการจัดการตามกระบวนการที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>4. ร้อยละของฐานข้อมูลจําเป็นตามมาตรฐานการพยาบาลในโรงพยาบาลที่นํามาใช้ประโยชน์ทางการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>5. ร้อยละขององค์ความรู้และ/หรือนวัตกรรมทางการพยาบาลที่พัฒนาด้วยการจัดการความรู้และนําไปใช้</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>6. จํานวนอุบัติการณ์ความไม่พร้อมต่อการช่วยชีวิตฉุกเฉิน</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                    </tbody>
-                </table>
+                
+                <div class="kpi-card teal-accent">
+                    <h4>1. ร้อยละของบุคลากรพยาบาลที่ปฏิบัติตามแนวทางปฏิบัติการพยาบาล (เป้าหมาย = 100%)</h4>
+                    <p><strong>นิยาม:</strong> จำนวนพยาบาลวิชาชีพที่ปฏิบัติตามแนวทางปฏิบัติในการบริหารงานและการปฏิบัติการพยาบาลแก่ผู้ป่วย</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนพยาบาลที่ปฏิบัติตาม (A)</label><input type="number" id="dim5_kpi1_A"></div>
+                        <div><label>บุคลากรพยาบาลทั้งหมด (B)</label><input type="number" id="dim5_kpi1_B"></div>
+                        <button onclick="calDim5Kpi1()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim5_kpi1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐานการพยาบาล (เป้าหมาย = 100%)</h4>
+                    <p><strong>หมายเหตุ:</strong> สุ่มประเมินจากเวชระเบียนหลังจำหน่าย อย่างน้อยร้อยละ 10 ของแฟ้มทั้งหมดต่อสัปดาห์ (เศษทศนิยมให้ปรับเพิ่ม 1 แฟ้ม)</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนบันทึกที่ถูกต้องครบถ้วน (A)</label><input type="number" id="dim5_kpi2_A"></div>
+                        <div><label>จำนวนแฟ้มเวชระเบียนที่สุ่มทั้งหมด (B)</label><input type="number" id="dim5_kpi2_B"></div>
+                        <button onclick="calDim5Kpi2()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim5_kpi2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>3. ร้อยละของอุบัติการณ์ภัยพิบัติหรือภาวะฉุกเฉินได้รับการจัดการตามกระบวนการ (เป้าหมาย = 100%)</h4>
+                    <p><strong>นิยาม:</strong> การจัดการอุบัติการณ์ฉุกเฉิน (เช่น อัคคีภัย อุทกภัย แผ่นดินไหว ไฟฟ้าดับ โรคระบาด) ได้ถูกต้องตามกระบวนการแนวทาง</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนครั้งที่จัดการถูกต้อง (A)</label><input type="number" id="dim5_kpi3_A"></div>
+                        <div><label>จำนวนครั้งที่เกิดเหตุฉุกเฉินทั้งหมด (B)</label><input type="number" id="dim5_kpi3_B"></div>
+                        <button onclick="calDim5Kpi3()">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim5_kpi3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>4-5. ร้อยละการใช้ประโยชน์ฐานข้อมูล และ นวัตกรรม/องค์ความรู้พยาบาล (เป้าหมาย &ge; 80%)</h4>
+                    <p><strong>นิยาม:</strong> การนำฐานข้อมูลจำเป็นมาใช้ประโยชน์ทางการบริหาร/วิจัย และการนำนวัตกรรมมาเผยแพร่ใช้ในการปฏิบัติงานจริง</p>
+                    <div class="calc-row" style="background:#f9fafb; padding:10px; border-radius:6px; border: 1px solid #e5e7eb;">
+                        <div><label>ฐานข้อมูลที่ใช้ประโยชน์ (A4)</label><input type="number" id="dim5_kpi4_A" style="width:115px;"></div>
+                        <div><label>ฐานข้อมูลจำเป็นทั้งหมด (B4)</label><input type="number" id="dim5_kpi4_B" style="width:115px;"></div>
+                        <div style="border-left:1px dashed #ccc; padding-left:10px;"><label>นวัตกรรมที่นำไปใช้จริง (A5)</label><input type="number" id="dim5_kpi5_A" style="width:115px;"></div>
+                        <div><label>นวัตกรรมที่พัฒนาทั้งหมด (B5)</label><input type="number" id="dim5_kpi5_B" style="width:115px;"></div>
+                        <button onclick="calDim5Kpi4And5()">คำนวณรวม</button>
+                    </div>
+                    <div style="margin-top:8px; font-size:0.9rem; font-weight:bold;">
+                        • ร้อยละการใช้ฐานข้อมูล: <span id="res_dim5_kpi4">-</span><br>
+                        • ร้อยละนวัตกรรม/KM ที่ได้ใช้จริง: <span id="res_dim5_kpi5">-</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card red-accent">
+                    <h4>6. จำนวนอุบัติการณ์ความไม่พร้อมต่อการช่วยชีวิตฉุกเฉิน (เป้าหมาย = 0 ครั้ง)</h4>
+                    <p><strong>นิยาม:</strong> ความไม่พร้อมของทีม สถานที่ อุปกรณ์ หรือยา สำหรับช่วยฟื้นคืนชีพผู้ป่วยวิกฤตคุกคามชีวิตขณะเกิดเหตุ</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนอุบัติการณ์ที่เกิดขึ้น</label><input type="number" id="dim5_kpi6_A" placeholder="จำนวนครั้ง"></div>
+                        <button onclick="calDim5Kpi6()" style="background-color:#dc2626;">บันทึกตรวจผล</button>
+                        <div class="result">สถานะ: <span id="res_dim5_kpi6">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-link"><a href="#" target="_blank">🔗 เปิดรายงานแดชบอร์ดสรุปภาพรวม (Looker Studio) ↗️</a></div>
             </div>
 
-            <!-- แท็บมิติที่ 6 -->
+            <!-- ==================== มิติที่ 6 ==================== -->
             <div id="dim6" class="tab-content">
-                <div class="m集中-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล (Focus: OPD & NCD Outcomes)</div>
-                <table class="kpi-table">
-                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
-                    <tbody>
-                        <tr><td>1. ร้อยละของการคัดกรองผู้ใช้บริการถูกต้อง</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>2. ร้อยละของผู้ป่วยที่อยู่ในภาวะคุกคามชีวิตได้รับการแก้ไขทันทีภายใน 4 นาที</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>3. อัตราการเกิดอาการเปลี่ยนแปลงของผู้ป่วยโดยไม่ได้คาดการณ์</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>4. อัตราการเกิดภาวะแทรกซ้อนที่ป้องกันได้ (เช่น เบาหวาน/ความดันโลหิตสูง คลินิก NCD)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>5. อัตราการเกิดอุบัติการณ์ไม่พึงประสงค์ระหว่างส่งต่อหรือเคลื่อนย้าย</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>6. อัตราการกลับเข้ารักษาซ้ําภายใน 48 ชั่วโมงโดยไม่ได้วางแผน (OPD Re-visit)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>7. ร้อยละของความคลาดเคลื่อนจากการบริหารยา/สารน้ํามีความรุนแรงระดับ E-I</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>8. จํานวนอุบัติการณ์การระบุตัวผู้ป่วยผิดคน</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>9. ร้อยละของการพลัดตกหกล้มมีความรุนแรงระดับ E-I</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>10. อัตราการเกิดการบาดเจ็บจากการจัดท่า ผูกยึด หรือการใช้อุปกรณ์และเครื่องมือ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                        <tr><td>11. ร้อยละของผู้ป่วยที่มาตรวจตามนัดมีความรู้และทักษะการจัดการสุขภาพตนเอง (Self-management คลินิก NCD)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
-                    </tbody>
-                </table>
+                <div class="m集中-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล (OPD Quality Outcomes)</div>
+                
+                <div class="kpi-card teal-accent">
+                    <h5>1. ร้อยละของการคัดกรองผู้ใช้บริการถูกต้อง (เป้าหมาย = 100%)</h5>
+                    <p><strong>นิยาม:</strong> คัดแยกประเภทผู้ป่วย ณ จุดคัดกรองได้ถูกต้อง ตรงแผนก หรือไม่เกิดภาวะวิกฤตแทรกซ้อนเนื่องจากรอผิดจุด</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนที่คัดกรองถูกต้อง (A)</label><input type="number" id="dim6_kpi1_A"></div>
+                        <div><label>จำนวนผู้ป่วยนอกทั้งหมด (B)</label><input type="number" id="dim6_kpi1_B"></div>
+                        <button onclick="calDim6Percent('dim6_kpi1', 'res_dim6_kpi1', 100)">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim6_kpi1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h5>2. ร้อยละของผู้ป่วยที่อยู่ในภาวะคุกคามชีวิตได้รับการแก้ไขทันทีภายใน 4 นาที (เป้าหมาย = 100%)</h5>
+                    <p><strong>นิยาม:</strong> เริ่มกระบวนการช่วยฟื้นคืนชีพ (CPR) ผู้ป่วยกู้ชีพ ภายใน 4 นาที นับตั้งแต่ตรวจพบอาการทรุดวิกฤต</p>
+                    <div class="calc-row">
+                        <div><label>เคสที่กู้ชีพทันใน 4 นาที (A)</label><input type="number" id="dim6_kpi2_A"></div>
+                        <div><label>เคสวิกฤตคุกคามชีวิตทั้งหมด (B)</label><input type="number" id="dim6_kpi2_B"></div>
+                        <button onclick="calDim6Percent('dim6_kpi2', 'res_dim6_kpi2', 100)">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim6_kpi2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card red-accent">
+                    <h5 style="color:#b91c1c;">กลุ่มตัวชี้วัดความปลอดภัยและภาวะแทรกซ้อน (เป้าหมายอัตราผลลัพธ์ต้อง = 0%)</h5>
+                    <p>*ระบุจำนวนครั้งที่เกิดอุบัติการณ์ไม่พึงประสงค์ (A) และผู้ป่วยรวมตามกลุ่มเป้าหมาย (B) ตามหลักเกณฑ์กองการพยาบาล</p>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr; gap:12px; background:#fff; padding:12px; border-radius:6px; margin-top:8px; border:1px solid #e5e7eb;">
+                        <!-- 6.3 Unplanned ICU -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem;">
+                            <span style="width:330px;">3. อัตราการเกิดอาการเปลี่ยนแปลงโดยไม่ได้คาดการณ์ (Unplanned ICU)</span>
+                            <input type="number" id="dim6_kpi3_A" placeholder="เคสทรุด (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi3_B" placeholder="ผู้ป่วยรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi3" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                        <!-- 6.4 แทรกซ้อน NCD -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem; border-top:1px solid #f3f4f6; padding-top:6px;">
+                            <span style="width:330px;">4. อัตราเกิดภาวะแทรกซ้อนที่ป้องกันได้ (เด็กชักไข้สูง, น้ำตาลวิกฤต NCD)</span>
+                            <input type="number" id="dim6_kpi4_A" placeholder="เกิดเหตุ (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi4_B" placeholder="ผู้ป่วยรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi4" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                        <!-- 6.5 อุบัติการณ์ระหว่างส่งต่อ -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem; border-top:1px solid #f3f4f6; padding-top:6px;">
+                            <span style="width:330px;">5. อัตราอุบัติการณ์ไม่พึงประสงค์ระหว่าง Refer/ส่งต่อเคลื่อนย้าย</span>
+                            <input type="number" id="dim6_kpi5_A" placeholder="เกิดเหตุ (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi5_B" placeholder="ส่งต่อรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi5" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                        <!-- 6.6 OPD Re-visit -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem; border-top:1px solid #f3f4f6; padding-top:6px;">
+                            <span style="width:330px;">6. อัตรากลับเข้ารักษาซ้ำใน 48 ชั่วโมงโดยไม่ได้วางแผน</span>
+                            <input type="number" id="dim6_kpi6_A" placeholder="กลับมาซ้ำ (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi6_B" placeholder="จำหน่ายรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi6" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                        <!-- 6.7 คลาดเคลื่อนยา E-I -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem; border-top:1px solid #f3f4f6; padding-top:6px;">
+                            <span style="width:330px;">7. ร้อยละความคลาดเคลื่อนบริหารยา/สารน้ำรุนแรงระดับ E-I</span>
+                            <input type="number" id="dim6_kpi7_A" placeholder="เคสรุนแรง (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi7_B" placeholder="คลาดเคลื่อนรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi7" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                        <!-- 6.9 พลัดตกหกล้ม E-I -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem; border-top:1px solid #f3f4f6; padding-top:6px;">
+                            <span style="width:330px;">9. ร้อยละของการพลัดตกหกล้มมีความรุนแรงระดับ E-I</span>
+                            <input type="number" id="dim6_kpi9_A" placeholder="หกล้มรุนแรง (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi9_B" placeholder="หกล้มรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi9" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                        <!-- 6.10 เจ็บปวดจากการจัดท่า -->
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:0.85rem; border-top:1px solid #f3f4f6; padding-top:6px;">
+                            <span style="width:330px;">10. อัตราเกิดการบาดเจ็บจากการจัดท่า ผูกยึด หรือใช้อุปกรณ์</span>
+                            <input type="number" id="dim6_kpi10_A" placeholder="บาดเจ็บ (A)" style="width:110px; padding:4px;">
+                            <input type="number" id="dim6_kpi10_B" placeholder="ผูกยึดรวม (B)" style="width:110px; padding:4px;">
+                            <span id="res_dim6_kpi10" style="font-weight:bold; margin-left:6px;">-</span>
+                        </div>
+                    </div>
+                    <div style="text-align:right; margin-top:10px;">
+                        <button onclick="calDim6SafetyGroup()" style="padding:6px 14px; background-color:#b91c1c; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">คำนวณกลุ่มความปลอดภัยรวม</button>
+                    </div>
+                </div>
+
+                <div class="kpi-card red-accent">
+                    <h4>8. จำนวนอุบัติการณ์การระบุตัวผู้ป่วยผิดคน (เป้าหมาย = 0 ครั้ง)</h4>
+                    <p><strong>นิยาม:</strong> ตัวผู้ป่วยกับเวชระเบียนหรือใบสั่งยาไม่ตรงกัน ปฏิบัติกิจกรรมการพยาบาลหรือรักษาพยาบาลผิดคน</p>
+                    <div class="calc-row">
+                        <div><input type="number" id="dim6_kpi8_A" placeholder="ระบุครั้งที่ระบุตัวผิด" style="width: 170px;"></div>
+                        <button onclick="calDim6Kpi8()" style="background-color:#dc2626;">บันทึกตรวจผล</button>
+                        <div class="result">สถานะ: <span id="res_dim6_kpi8">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card teal-accent">
+                    <h4>11. ร้อยละของผู้ป่วยที่มาตรวจตามนัดมีความรู้และทักษะการจัดการสุขภาพตนเอง (เป้าหมาย = 100%)</h4>
+                    <p><strong>นิยาม:</strong> ตอบคำถามและสะท้อนทักษะการดูแลตัวเองที่บ้าน (คลินิก NCD/เบาหวานความดัน) ได้ถูกต้องตามคำแนะนำเดิม</p>
+                    <div class="calc-row">
+                        <div><label>จำนวนเคสที่มีความรู้ดี (A)</label><input type="number" id="dim6_kpi11_A"></div>
+                        <div><label>จำนวนผู้ป่วยมาตามนัดรวม (B)</label><input type="number" id="dim6_kpi11_B"></div>
+                        <button onclick="calDim6Percent('dim6_kpi11', 'res_dim6_kpi11', 100)">คำนวณ</button>
+                        <div class="result">ผลลัพธ์: <span id="res_dim6_kpi11">-</span></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-link"><a href="#" target="_blank">🔗 เปิดรายงานแดชบอร์ดสรุปภาพรวม (Looker Studio) ↗️</a></div>
             </div>
 
         </div>
-
     </main>
 
     <!-- Footer -->
@@ -388,15 +749,16 @@
         <p>© 2026 งานผู้ป่วยนอก โรงพยาบาลตาคลี | พัฒนาโดย Khemika-OPD Takhli (Khemika Pongsri)</p>
     </footer>
 
-    <!-- ระบบ JavaScript ควบคุมหน้าและการสลับแท็บ -->
+    <!-- ส่วนของสคริปต์ควบคุมการประมวลผลระบบหลังบ้านทั้งหมด -->
     <script>
+        // ฟังก์ชันระบบล็อกอิน (Login) ตรวจสอบสิทธิ์
         function handleLogin(event) {
             event.preventDefault();
             const usernameInput = document.getElementById('username').value;
             const passwordInput = document.getElementById('password').value;
             const errorMsg = document.getElementById('errorMsg');
             
-            // ตั้งบัญชีเข้าใช้งานจำลองสำหรับหน่วยงาน
+            // ข้อมูลชื่อและรหัสผ่านเริ่มต้นของหน่วยงาน (อาจารย์แก้ไขได้ที่นี่)
             const correctUsername = "opdadmin";
             const correctPassword = "takhli2027";
             
@@ -408,22 +770,185 @@
             }
         }
 
+        // ฟังก์ชันคลิกสลับหน้าต่างแท็บมิติ
         function switchTab(event, tabId) {
-            // ซ่อนข้อมูลแท็บทั้งหมดก่อน
             const tabContents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < tabContents.length; i++) {
                 tabContents[i].classList.remove('active');
             }
-            
-            // ปล่อยปุ่มกดแท็บกลับสู่สภาวะปกติ
             const tabButtons = document.getElementsByClassName('tab-btn');
             for (let i = 0; i < tabButtons.length; i++) {
                 tabButtons[i].classList.remove('active');
             }
-            
-            // แสดงแท็บที่เลือกและเพิ่มสถานะ Active ให้ปุ่มที่คลิก
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
+        }
+
+        // ฟังก์ชันช่วยจัดการสีข้อความผลลัพธ์เกณฑ์ทั่วไป (>= 80%)
+        function displayResult(element, score) {
+            const roundedScore = score.toFixed(2);
+            if (score >= 80) {
+                element.innerHTML = `<span style="color: #059669;">${roundedScore}% (ผ่านเกณฑ์) ✅</span>`;
+            } else {
+                element.innerHTML = `<span style="color: #dc2626;">${roundedScore}% (ไม่ผ่านเกณฑ์) ❌</span>`;
+            }
+        }
+
+        // ====================คำนวณ มิติที่ 1 ====================
+        function calKpi1() {
+            const a = parseFloat(document.getElementById('dim1_kpi1_A').value); const b = parseFloat(document.getElementById('dim1_kpi1_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลตัวเลขให้ถูกต้อง'); return; }
+            displayResult(document.getElementById('res_kpi1'), (a * 100) / b);
+        }
+        function calKpi2() {
+            const a = parseFloat(document.getElementById('dim1_kpi2_A').value); const b = parseFloat(document.getElementById('dim1_kpi2_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลตัวเลขให้ถูกต้อง'); return; }
+            displayResult(document.getElementById('res_kpi2'), (a * 100) / b);
+        }
+        function calKpi3() {
+            const a = parseFloat(document.getElementById('dim1_kpi3_A').value); const b = parseFloat(document.getElementById('dim1_kpi3_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลตัวเลขให้ถูกต้อง'); return; }
+            displayResult(document.getElementById('res_kpi3'), (a * 100) / b);
+        }
+
+        // ====================คำนวณ มิติที่ 2 ====================
+        function calDim2Kpi1() {
+            const a = parseFloat(document.getElementById('dim2_kpi1_A').value); const b = parseFloat(document.getElementById('dim2_kpi1_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ถูกต้อง'); return; }
+            const s = (a * 100) / b;
+            document.getElementById('res_dim2_kpi1').innerHTML = (s >= 90 && s <= 110) ? `<span style="color: #059669;">${s.toFixed(2)}% (ผ่านเกณฑ์ 90-110%) ✅</span>` : `<span style="color: #dc2626;">${s.toFixed(2)}% (ไม่ผ่านเกณฑ์) ❌</span>`;
+        }
+        function calDim2Kpi2() {
+            const a = parseFloat(document.getElementById('dim2_kpi2_A').value); const b = parseFloat(document.getElementById('dim2_kpi2_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ถูกต้อง'); return; }
+            document.getElementById('res_dim2_kpi2').innerHTML = `<span style="color: #1f2937;">${(a / b).toFixed(1)} นาที/คน</span>`;
+        }
+        function calDim2Kpi3() {
+            const a = parseFloat(document.getElementById('dim2_kpi3_A').value); const b = parseFloat(document.getElementById('dim2_kpi3_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ถูกต้อง'); return; }
+            const s = (a * 100) / b;
+            document.getElementById('res_dim2_kpi3').innerHTML = s === 0 ? `<span style="color: #059669;">0% (ผ่านเกณฑ์) ✅</span>` : `<span style="color: #dc2626;">${s.toFixed(2)}% (ไม่ผ่านเกณฑ์) ❌</span>`;
+        }
+        function calDim2Kpi4() {
+            const a = parseFloat(document.getElementById('dim2_kpi4_A').value); const b = parseFloat(document.getElementById('dim2_kpi4_B').value);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ถูกต้อง'); return; }
+            displayResult(document.getElementById('res_dim2_kpi4'), (a * 100) / b);
+        }
+
+        // ====================คำนวณ มิติที่ 3 ====================
+        function calDim3Kpi1() {
+            const a = parseFloat(document.getElementById('dim3_kpi1_A').value); const b = parseFloat(document.getElementById('dim3_kpi1_B').value);
+            if (b === 0 || isNaN(a)) return; displayResult(document.getElementById('res_dim3_kpi1'), (a * 100) / b);
+        }
+        function calDim3Kpi2() {
+            const a = parseFloat(document.getElementById('dim3_kpi2_A').value); const b = parseFloat(document.getElementById('dim3_kpi2_B').value);
+            if (b === 0 || isNaN(a)) return; displayResult(document.getElementById('res_dim3_kpi2'), (a * 100) / b);
+        }
+        function calDim3Kpi3() {
+            const a = parseFloat(document.getElementById('dim3_kpi3_A').value); const b = parseFloat(document.getElementById('dim3_kpi3_B').value);
+            if (b === 0 || isNaN(a)) return; const s = (a * 100) / b;
+            document.getElementById('res_dim3_kpi3').innerHTML = s < 5 ? `<span style="color: #059669;">${s.toFixed(2)}% (ผ่านเกณฑ์ <5%) ✅</span>` : `<span style="color: #dc2626;">${s.toFixed(2)}% (ไม่ผ่าน) ❌</span>`;
+        }
+        function calDim3Kpi4() {
+            const a = parseFloat(document.getElementById('dim3_kpi4_A').value);
+            if (isNaN(a)) return;
+            document.getElementById('res_dim3_kpi4').innerHTML = a === 0 ? `<span style="color: #059669;">0 ข้อ (ผ่านเกณฑ์) ✅</span>` : `<span style="color: #dc2626;">${a} ข้อ (ไม่ผ่านเกณฑ์) ❌</span>`;
+        }
+        function calDim3Kpi8() {
+            const a = parseFloat(document.getElementById('dim3_kpi8_A').value); const b = parseFloat(document.getElementById('dim3_kpi8_B').value);
+            if (b === 0 || isNaN(a)) return; displayResult(document.getElementById('res_dim3_kpi8'), (a * 100) / b);
+        }
+
+        // ====================คำนวณ มิติที่ 4 ====================
+        function calDim4Kpi1() {
+            const a = parseFloat(document.getElementById('dim4_kpi1_A').value); const b = parseFloat(document.getElementById('dim4_kpi1_B').value);
+            if (b === 0 || isNaN(a)) return; displayResult(document.getElementById('res_dim4_kpi1'), (a * 100) / b);
+        }
+        function calDim4Kpi2() {
+            const a = parseFloat(document.getElementById('dim4_kpi2_A').value); const b = parseFloat(document.getElementById('dim4_kpi2_B').value);
+            if (b === 0 || isNaN(a)) return; displayResult(document.getElementById('res_dim4_kpi2'), (a * 100) / b);
+        }
+        function calDim4Kpi3() {
+            const a = parseFloat(document.getElementById('dim4_kpi3_A').value); const b = parseFloat(document.getElementById('dim4_kpi3_B').value);
+            if (b === 0 || isNaN(a)) return; const s = (a * 100) / b;
+            document.getElementById('res_dim4_kpi3').innerHTML = s <= 1 ? `<span style="color:#059669;">${s.toFixed(2)}% (ผ่านเกณฑ์ &le;1%) ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(2)}% (ไม่ผ่าน) ❌</span>`;
+        }
+        function calDim4Kpi4() {
+            const a = parseFloat(document.getElementById('dim4_kpi4_A').value); const b = parseFloat(document.getElementById('dim4_kpi4_B').value);
+            if (b === 0 || isNaN(a)) return; const s = (a * 100) / b;
+            document.getElementById('res_dim4_kpi4').innerHTML = s === 100 ? `<span style="color:#059669;">100% (ผ่านเกณฑ์) ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(2)}% (ไม่ผ่าน 100%) ❌</span>`;
+        }
+        function calDim4CprAndInfection() {
+            const b = parseFloat(document.getElementById('dim4_kpi_staff_B').value);
+            if (isNaN(b) || b === 0) { alert('กรุณากรอกจำนวนพยาบาลทั้งหมด (B)'); return; }
+            const a5 = parseFloat(document.getElementById('dim4_kpi5_A').value) || 0;
+            const a6 = parseFloat(document.getElementById('dim4_kpi6_A').value) || 0;
+            const a7 = parseFloat(document.getElementById('dim4_kpi7_A').value) || 0;
+            const s5 = (a5*100)/b; const s6 = (a6*100)/b; const s7 = (a7*100)/b;
+            document.getElementById('res_dim4_kpi5').innerHTML = s5===100 ? `<span style="color:#059669;">100% ✅</span>` : `<span style="color:#dc2626;">${s5.toFixed(1)}% ❌</span>`;
+            document.getElementById('res_dim4_kpi6').innerHTML = s6&ge;80 ? `<span style="color:#059669;">${s6.toFixed(1)}% ✅</span>` : `<span style="color:#dc2626;">${s6.toFixed(1)}% ❌</span>`;
+            document.getElementById('res_dim4_kpi7').innerHTML = s7===100 ? `<span style="color:#059669;">100% ✅</span>` : `<span style="color:#dc2626;">${s7.toFixed(1)}% ❌</span>`;
+        }
+        function calDim4Kpi8() {
+            const a = parseFloat(document.getElementById('dim4_kpi8_A').value); const b = parseFloat(document.getElementById('dim4_kpi8_B').value);
+            if (b === 0 || isNaN(a)) return; const s = (a*100)/b;
+            document.getElementById('res_dim4_kpi8').innerHTML = s===100 ? `<span style="color:#059669;">100% (ผ่านเกณฑ์) ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(1)}% ❌</span>`;
+        }
+        function calDim4Kpi9() {
+            const a = parseFloat(document.getElementById('dim4_kpi9_A').value); const b = parseFloat(document.getElementById('dim4_kpi9_B').value);
+            if (b === 0 || isNaN(a)) return; const s = (a*100)/b;
+            document.getElementById('res_dim4_kpi9').innerHTML = s===100 ? `<span style="color:#059669;">100% (ผ่านเกณฑ์) ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(1)}% ❌</span>`;
+        }
+
+        // ====================คำนวณ มิติที่ 5 ====================
+        function calDim5Kpi1() {
+            const a = parseFloat(document.getElementById('dim5_kpi1_A').value); const b = parseFloat(document.getElementById('dim5_kpi1_B').value);
+            if(b===0||isNaN(a)) return; const s = (a*100)/b;
+            document.getElementById('res_dim5_kpi1').innerHTML = s===100 ? `<span style="color:#059669;">100% ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(1)}% ❌</span>`;
+        }
+        function calDim5Kpi2() {
+            const a = parseFloat(document.getElementById('dim5_kpi2_A').value); const b = parseFloat(document.getElementById('dim5_kpi2_B').value);
+            if(b===0||isNaN(a)) return; const s = (a*100)/b;
+            document.getElementById('res_dim5_kpi2').innerHTML = s===100 ? `<span style="color:#059669;">100% ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(1)}% ❌</span>`;
+        }
+        function calDim5Kpi3() {
+            const a = parseFloat(document.getElementById('dim5_kpi3_A').value); const b = parseFloat(document.getElementById('dim5_kpi3_B').value);
+            if(b===0||isNaN(a)) return; const s = (a*100)/b;
+            document.getElementById('res_dim5_kpi3').innerHTML = s===100 ? `<span style="color:#059669;">100% ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(1)}% ❌</span>`;
+        }
+        function calDim5Kpi4And5() {
+            const a4 = parseFloat(document.getElementById('dim5_kpi4_A').value)||0; const b4 = parseFloat(document.getElementById('dim5_kpi4_B').value)||1;
+            const a5 = parseFloat(document.getElementById('dim5_kpi5_A').value)||0; const b5 = parseFloat(document.getElementById('dim5_kpi5_B').value)||1;
+            const s4 = (a4*100)/b4; const s5 = (a5*100)/b5;
+            document.getElementById('res_dim5_kpi4').innerHTML = s4&ge;80 ? `<span style="color:#059669;">${s4.toFixed(1)}% ✅</span>` : `<span style="color:#dc2626;">${s4.toFixed(1)}% ❌</span>`;
+            document.getElementById('res_dim5_kpi5').innerHTML = s5&ge;80 ? `<span style="color:#059669;">${s5.toFixed(1)}% ✅</span>` : `<span style="color:#dc2626;">${s5.toFixed(1)}% ❌</span>`;
+        }
+        function calDim5Kpi6() {
+            const a = parseFloat(document.getElementById('dim5_kpi6_A').value); if(isNaN(a)) return;
+            document.getElementById('res_dim5_kpi6').innerHTML = a===0 ? `<span style="color:#059669;">0 ครั้ง (ผ่านเกณฑ์) ✅</span>` : `<span style="color:#dc2626;">${a} ครั้ง (ไม่ผ่าน) ❌</span>`;
+        }
+
+        // ====================คำนวณ มิติที่ 6 ====================
+        function calDim6Percent(inputId, resId, target) {
+            const a = parseFloat(document.getElementById(inputId + '_A').value); const b = parseFloat(document.getElementById(inputId + '_B').value);
+            if(isNaN(a)||isNaN(b)||b===0) return; const s = (a*100)/b;
+            document.getElementById(resId).innerHTML = s===target ? `<span style="color:#059669;">${s.toFixed(1)}% ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(1)}% ❌</span>`;
+        }
+        function calDim6SafetyGroup() {
+            const kpis = [3, 4, 5, 6, 7, 9, 10];
+            kpis.forEach(num => {
+                const a = parseFloat(document.getElementById('dim6_kpi' + num + '_A').value);
+                const b = parseFloat(document.getElementById('dim6_kpi' + num + '_B').value);
+                const res = document.getElementById('res_dim6_kpi' + num);
+                if(!isNaN(a) && !isNaN(b) && b!==0) {
+                    const s = (a*100)/b;
+                    res.innerHTML = s===0 ? `<span style="color:#059669;">${s.toFixed(2)}% ✅</span>` : `<span style="color:#dc2626;">${s.toFixed(2)}% ❌</span>`;
+                }
+            });
+        }
+        function calDim6Kpi8() {
+            const a = parseFloat(document.getElementById('dim6_kpi8_A').value); if(isNaN(a)) return;
+            document.getElementById('res_dim6_kpi8').innerHTML = a===0 ? `<span style="color:#059669;">0 ครั้ง (ผ่านเกณฑ์) ✅</span>` : `<span style="color:#dc2626;">${a} ครั้ง (ไม่ผ่าน) ❌</span>`;
         }
     </script>
 </body>
