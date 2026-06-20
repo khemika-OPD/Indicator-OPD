@@ -132,7 +132,17 @@
         .input-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
         .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 0.8rem; font-weight: 500; color: #4b5563; }
-        .input-group select, .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
+        .input-group input, .input-group select { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
+        
+        /* เน้นสไตล์ช่องปฏิทิน */
+        .date-picker-input {
+            background-color: #fff;
+            color: #1f2937;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #0d9488 !important;
+        }
+
         .calc-btn { padding: 8px 16px; background-color: #0d9488; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .calc-btn:hover { background-color: #0f766e; }
         .res-display { font-size: 1.05rem; font-weight: bold; margin-left: 8px; }
@@ -142,15 +152,18 @@
 </head>
 <body>
 
+    <!-- Header -->
     <header>
         <div class="header-container">
-            <h1 id="mainHubTitle">ศูนย์ข้อมูลและแดชบอร์ดตัวชี้วัดอัจฉริยะ</h1>
+            <h1>ศูนย์ข้อมูลและแดชบอร์ดตัวชี้วัดอัจฉริยะ</h1>
             <a href="index.html" class="back-btn">⬅️ หน้าแรกระบบ</a>
         </div>
     </header>
 
+    <!-- Main Section -->
     <main>
         
+        <!-- ทางเลือก 2 ทางหลัก (Landing Gateway) -->
         <div id="gatewaySection" class="gateway-section">
             <div class="gate-card" onclick="openIndicators('opd')">
                 <div class="gate-icon">🏥</div>
@@ -167,6 +180,7 @@
             </div>
         </div>
 
+        <!-- ==================== หน้าแสดงตัวชี้วัดฝั่ง OPD ==================== -->
         <div id="opdContainer" class="dashboard-container">
             <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="font-size:1.4rem;">📊 แดชบอร์ดตัวชี้วัดพยาบาลผู้ป่วยนอก (6 มิติ)</h2>
@@ -175,26 +189,25 @@
 
             <div class="tabs-menu">
                 <button class="tab-btn active" onclick="switchTab(event, 'dim1')">มิติที่ 1 นำองค์กร</button>
-                <button class="tab-btn" onclick="switchTab(event, 'dim2')">มิติที่ 2 ประสิทธิภาพ</button>
-                <button class="tab-btn" onclick="switchTab(event, 'dim3')">มิติที่ 3 ผู้ใช้บริการ</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim5')">มิติที่ 5 ระบบงาน</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim6')">มิติที่ 6 การบริการพยาบาล</button>
             </div>
 
+            <!-- มิติที่ 1 นำองค์กร -->
             <div id="dim1" class="tab-content active">
                 <div class="m集中-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร</div>
                 
                 <div class="kpi-container">
                     <div class="kpi-header-title">1. ร้อยละของตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย (เป้าหมาย &ge; 80%)</div>
-                    
                     <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ตัวชี้วัดหน่วยงานที่เชื่อมโยงกับวิสัยทัศน์และมีผลลัพธ์ดีกว่าค่าเป้าหมายที่ตึกกำหนด<br>
+                        <strong>📖 นิยาม:</strong> ตัวชี้วัดหน่วยงานบริการพยาบาลที่เชื่อมโยงกับวิสัยทัศน์องค์กรพยาบาล และมีผลลัพธ์ดีกว่าค่าเป้าหมายที่กำหนด<br>
                         <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
                         • <strong>A:</strong> จำนวนตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย | • <strong>B:</strong> จำนวนตัวชี้วัดวิสัยทัศน์ทั้งหมด
                     </div>
-
                     <div class="input-row">
                         <div class="input-group">
-                            <label>เลือกงวดประเมิน</label>
-                            <select><option>รายเดือน (ปัจจุบัน)</option><option>รวมไตรมาส</option><option>สรุปภาพรวมปี</option></select>
+                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
+                            <input type="date" class="date-picker-input" id="date_opd_d1_k1">
                         </div>
                         <div class="input-group">
                             <label>จำนวนตัวชี้วัดที่บรรลุ (A)</label>
@@ -208,37 +221,98 @@
                         <div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k1">-</span></div>
                     </div>
                 </div>
+            </div>
 
+            <!-- มิติที่ 5 ระบบงานและกระบวนการสำคัญ -->
+            <div id="dim5" class="tab-content">
+                <div class="m集中-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ</div>
+                
+                <!-- KPI 5.2 บันทึกทางการพยาบาล -->
                 <div class="kpi-container">
-                    <div class="kpi-header-title">2. ร้อยละของโครงการ/กิจกรรมดําเนินการตามกระบวนการควบคุมภายในที่มีคะแนนความเสี่ยงลดลง (เป้าหมาย &ge; 80%)</div>
+                    <div class="kpi-header-title">2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐานการพยาบาลในโรงพยาบาล (เป้าหมาย = 100%)</div>
                     <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> โครงการ/กิจกรรมตามแผนปฏิบัติการประจำปี (แบบ ปค.5) ที่มีคะแนนความเสี่ยงหลังดำเนินการควบคุมลดลง<br>
+                        <strong>📖 นิยาม:</strong> แบบฟอร์มบันทึกกิจกรรมการพยาบาลตามเกณฑ์มาตรฐานที่สุ่มตรวจเวชระเบียนผู้ใช้บริการหลังจำหน่าย (สุ่มอย่างน้อยร้อยละ 10 ของแฟ้มทั้งหมดต่อสัปดาห์ เศษทศนิยมปรับเพิ่ม 1 แฟ้ม)<br>
                         <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนโครงการ/กิจกรรมที่มีคะแนนความเสี่ยงลดลง | • <strong>B:</strong> จำนวนโครงการ/กิจกรรมตามกระบวนการทั้งหมด
+                        • <strong>A:</strong> จำนวนบันทึกทางการพยาบาลที่ครบถ้วนตามเกณฑ์ | • <strong>B:</strong> จำนวนบันทึกทางการพยาบาลที่สุ่มประเมินทั้งหมด
                     </div>
                     <div class="input-row">
                         <div class="input-group">
-                            <label>เลือกงวดประเมิน</label>
-                            <select><option>รายเดือน (ปัจจุบัน)</option><option>รวมไตรมาส</option><option>สรุปภาพรวมปี</option></select>
+                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
+                            <input type="date" class="date-picker-input" id="date_opd_d5_k2">
                         </div>
                         <div class="input-group">
-                            <label>โครงการความเสี่ยงลด (A)</label>
-                            <input type="number" id="opd_d1_k2_A" placeholder="ระบุจำนวน">
+                            <label>บันทึกที่ครบถ้วนตามเกณฑ์ (A)</label>
+                            <input type="number" id="opd_d5_k2_A" placeholder="ระบุจำนวนแฟ้ม">
                         </div>
                         <div class="input-group">
-                            <label>โครงการทั้งหมด (B)</label>
-                            <input type="number" id="opd_d1_k2_B" placeholder="ระบุจำนวน">
+                            <label>จำนวนแฟ้มที่สุ่มทั้งหมด (B)</label>
+                            <input type="number" id="opd_d5_k2_B" placeholder="ระบุจำนวนแฟ้ม">
                         </div>
-                        <button class="calc-btn" onclick="calPercent('opd_d1_k2', 80, true)">คำนวณผล</button>
-                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k2">-</span></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k2', 100, true)">คำนวณผล</button>
+                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d5_k2">-</span></div>
                     </div>
                 </div>
             </div>
-            
-            <div id="dim2" class="tab-content"><p style="color:#6b7280;">ข้อมูลมิติที่ 2 ระบบงานประสิทธิภาพและตัวชี้วัดอื่นๆ พร้อมเครื่องมือช่วยคำนวณทำงานได้ปกติ...</p></div>
-            <div id="dim3" class="tab-content"><p style="color:#6b7280;">ข้อมูลมิติที่ 3 ผลลัพธ์บริการผู้รับประโยชน์พร้อมเครื่องมือช่วยคำนวณทำงานได้ปกติ...</p></div>
+
+            <!-- มิติที่ 6 ผลลัพธ์การบริการพยาบาล -->
+            <div id="dim6" class="tab-content">
+                <div class="m集中-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล</div>
+                
+                <!-- KPI 6.6 Re-visit -->
+                <div class="kpi-container">
+                    <div class="kpi-header-title">6. อัตราการกลับเข้ารักษาซ้ําภายใน 48 ชั่วโมงโดยไม่ได้วางแผน (เป้าหมาย = 0%)</div>
+                    <div class="formula-box">
+                        <strong>📖 นิยาม:</strong> ผู้ป่วยกลับมารักษาซ้ำที่ OPD หรือ ER ภายใน 48 ชั่วโมงหลังจำหน่ายกลับบ้านเนื่องจากอาการไม่ทุเลาหรือทรุดลง โดยไม่ได้วินิจฉัยความเสี่ยง/วางแผนล่วงหน้า<br>
+                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
+                        • <strong>A:</strong> จำนวนผู้ป่วยที่กลับเข้ารักษาซ้ำภายใน 48 ชั่วโมงโดยไม่ได้วางแผน | • <strong>B:</strong> จำนวนผู้ป่วยที่จำหน่ายกลับบ้านทั้งหมดในงวดเดียวกัน
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
+                            <input type="date" class="date-picker-input" id="date_opd_d6_k6">
+                        </div>
+                        <div class="input-group">
+                            <label>จำนวนเคสกลับมาซ้ำ (A)</label>
+                            <input type="number" id="opd_d6_k6_A" placeholder="ระบุจำนวนเคส">
+                        </div>
+                        <div class="input-group">
+                            <label>จำนวนเคสจำหน่ายกลับหมด (B)</label>
+                            <input type="number" id="opd_d6_k6_B" placeholder="ระบุจำนวนเคส">
+                        </div>
+                        <button class="calc-btn" onclick="calPercentZeroTarget('opd_d6_k6')">คำนวณผล</button>
+                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d6_k6">-</span></div>
+                    </div>
+                </div>
+
+                <!-- KPI 6.7 Medication Error E-I -->
+                <div class="kpi-container">
+                    <div class="kpi-header-title">7. ร้อยละของความคลาดเคลื่อนจากการบริหารยา/สารน้ํามีความรุนแรงระดับ E-I (เป้าหมาย = 0%)</div>
+                    <div class="formula-box">
+                        <strong>📖 นิยาม:</strong> การบริหารยาไม่ถูกต้องตามหลัก 10Rs (Right drug, patient, dose, route, time, documentation, refuse, history, interaction, education) และเกิดผลกระทบระดับต้องได้รับการรักษา (ระดับ E-I)<br>
+                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
+                        • <strong>A:</strong> จำนวนครั้งที่เกิดความคลาดเคลื่อนรุนแรงระดับ E-I | • <strong>B:</strong> จำนวนครั้งที่เกิดความคลาดเคลื่อนยารวมทั้งหมด (ระดับ A-I)
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
+                            <input type="date" class="date-picker-input" id="date_opd_d6_k7">
+                        </div>
+                        <div class="input-group">
+                            <label>ความคลาดเคลื่อนระดับ E-I (A)</label>
+                            <input type="number" id="opd_d6_k7_A" placeholder="ระบุจำนวนครั้ง">
+                        </div>
+                        <div class="input-group">
+                            <label>ความคลาดเคลื่อนรวม A-I (B)</label>
+                            <input type="number" id="opd_d6_k7_B" placeholder="ระบุจำนวนครั้ง">
+                        </div>
+                        <button class="calc-btn" onclick="calPercentZeroTarget('opd_d6_k7')">คำนวณผล</button>
+                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d6_k7">-</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- ==================== หน้าแสดงตัวชี้วัดฝั่ง NCD ==================== -->
         <div id="ncdContainer" class="dashboard-container">
             <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="font-size:1.4rem;">📊 ระบบงานและตัวชี้วัดคุณภาพงานคลินิก NCD</h2>
@@ -246,19 +320,20 @@
             </div>
 
             <div class="tab-content active">
-                <div class="m集中-title">🩸 อัตราการควบคุมโรคและคัดกรองภาวะแทรกซ้อน (ประจำคลินิก NCD)</div>
+                <div class="m集中-title">🩸 อัตราการควบคุมโรคประจำคลินิก NCD</div>
 
+                <!-- NCD KPI 1: คุมความดัน -->
                 <div class="kpi-container">
                     <div class="kpi-header-title">1. ร้อยละของผู้ป่วยโรคความดันโลหิตสูงที่ควบคุมความดันโลหิตได้ดีตามเกณฑ์ (เป้าหมาย &ge; 80%)</div>
                     <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ผู้ป่วย Hypertension ในทะเบียนที่มารับบริการและวัดค่าความดันเฉลี่ยอยู่ในเกณฑ์ควบคุมได้ (< 140/90 mmHg)<br>
+                        <strong>📖 นิยาม:</strong> ผู้ป่วย Hypertension ในทะเบียนที่มารับบริการและวัดค่าความดันเฉลี่ยอยู่ในเกณฑ์ควบคุมได้ดี (&lt; 140/90 mmHg)<br>
                         <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
                         • <strong>A:</strong> จำนวนผู้ป่วยความดันโลหิตสูงที่คุมความดันได้ตามเกณฑ์ | • <strong>B:</strong> จำนวนผู้ป่วยความดันโลหิตสูงที่ได้รับการตรวจวัดทั้งหมดในงวดนั้น
                     </div>
                     <div class="input-row">
                         <div class="input-group">
-                            <label>รอบบันทึกข้อมูล</label>
-                            <select><option>รายเดือน (ปัจจุบัน)</option><option>รายไตรมาส</option><option>สรุปรายปีงบประมาณ</option></select>
+                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
+                            <input type="date" class="date-picker-input" id="date_ncd_k1">
                         </div>
                         <div class="input-group">
                             <label>จำนวนเคสที่คุมได้ดี (A)</label>
@@ -273,20 +348,21 @@
                     </div>
                 </div>
 
+                <!-- NCD KPI 2: HbA1c -->
                 <div class="kpi-container">
-                    <div class="kpi-header-title">2. ร้อยละของผู้ป่วยเบาหวานที่มีผลตรวจระดับน้ำตาลสะสม HbA1c < 7% (เป้าหมาย &ge; 40%)</div>
+                    <div class="kpi-header-title">2. ร้อยละของผู้ป่วยเบาหวานที่มีผลตรวจระดับน้ำตาลสะสม HbA1c &lt; 7% (เป้าหมาย &ge; 40%)</div>
                     <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ผู้ป่วย Diabetes Mellitus ที่ได้รับการเจาะตรวจเลือดประจำปี/งวดประจำเดือนและมีค่า HbA1c ควบคุมได้ดี<br>
+                        <strong>📖 นิยาม:</strong> ผู้ป่วย Diabetes Mellitus ที่ได้รับการเจาะตรวจเลือดประจำปี/ตามงวดบริการและมีค่าน้ำตาลสะสมควบคุมได้ดีตามเกณฑ์<br>
                         <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนผู้ป่วยเบาหวานที่มีผลตรวจ HbA1c < 7% | • <strong>B:</strong> จำนวนผู้ป่วยเบาหวานที่ได้รับการเจาะตรวจ HbA1c ทั้งหมด
+                        • <strong>A:</strong> จำนวนผู้ป่วยเบาหวานที่มีผลตรวจ HbA1c &lt; 7% | • <strong>B:</strong> จำนวนผู้ป่วยเบาหวานที่ได้รับการเจาะตรวจ HbA1c ทั้งหมด
                     </div>
                     <div class="input-row">
                         <div class="input-group">
-                            <label>รอบบันทึกข้อมูล</label>
-                            <select><option>รายเดือน (ปัจจุบัน)</option><option>รายไตรมาส</option><option>สรุปรายปีงบประมาณ</option></select>
+                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
+                            <input type="date" class="date-picker-input" id="date_ncd_k2">
                         </div>
                         <div class="input-group">
-                            <label>จำนวนเคส HbA1c < 7% (A)</label>
+                            <label>จำนวนเคส HbA1c &lt; 7% (A)</label>
                             <input type="number" id="ncd_k2_A" placeholder="ระบุจำนวนเคส">
                         </div>
                         <div class="input-group">
@@ -302,19 +378,24 @@
 
     </main>
 
+    <!-- Footer -->
     <footer>
         <p>© 2026 งานผู้ป่วยนอก โรงพยาบาลตาคลี | พัฒนาโดย Khemika-OPD Takhli (Khemika Pongsri)</p>
     </footer>
 
+    <!-- JavaScript สำหรับควบคุมระบบปฏิทินและคำนวณ -->
     <script>
-        // ควบคุมหน้าหลัก Gateway
+        // ฟังก์ชันตั้งค่าวันที่ปัจจุบันเป็นค่าเริ่มต้นให้กับทุกปฏิทินในหน้าเว็บเพื่อความสะดวก
+        window.onload = function() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInputs = document.querySelectorAll('.date-picker-input');
+            dateInputs.forEach(input => { input.value = today; });
+        };
+
         function openIndicators(type) {
             document.getElementById('gatewaySection').style.display = 'none';
-            if(type === 'opd') {
-                document.getElementById('opdContainer').style.display = 'block';
-            } else if(type === 'ncd') {
-                document.getElementById('ncdContainer').style.display = 'block';
-            }
+            if(type === 'opd') { document.getElementById('opdContainer').style.display = 'block'; } 
+            else if(type === 'ncd') { document.getElementById('ncdContainer').style.display = 'block'; }
         }
 
         function showGateway() {
@@ -332,10 +413,11 @@
             event.currentTarget.classList.add('active');
         }
 
-        // ฟังก์ชันคำนวณร้อยละส่วนกลางแบบอัจฉริยะ โชว์สถานะสีตามเป้าหมายของแต่ละสูตร
+        // ฟังก์ชันคำนวณทั่วไปเป้าหมายเชิงบวก (ผ่านเมื่อ >= Target)
         function calPercent(prefix, targetScore, isGreaterTrue) {
             const a = parseFloat(document.getElementById(prefix + '_A').value);
             const b = parseFloat(document.getElementById(prefix + '_B').value);
+            const dateVal = document.getElementById('date_' + prefix).value;
             const res = document.getElementById('res_' + prefix);
             
             if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกตัวเลขให้ครบถ้วน และตัวหาร (B) ต้องไม่เป็น 0'); return; }
@@ -343,12 +425,28 @@
             const score = (a * 100) / b;
             const rounded = score.toFixed(2);
             
-            if (isGreaterTrue) {
-                if (score >= targetScore) {
-                    res.innerHTML = `<span style="color: #059669;">${rounded}% (ผ่านเกณฑ์ &ge; ${targetScore}%) ✅</span>`;
-                } else {
-                    res.innerHTML = `<span style="color: #dc2626;">${rounded}% (ไม่ผ่านเกณฑ์) ❌</span>`;
-                }
+            if (isGreaterTrue && score >= targetScore) {
+                res.innerHTML = `<span style="color: #059669;">${rounded}% (ผ่านเกณฑ์) ✅</span>`;
+            } else {
+                res.innerHTML = `<span style="color: #dc2626;">${rounded}% (ไม่ผ่านเกณฑ์) ❌</span>`;
+            }
+        }
+
+        // ฟังก์ชันคำนวณเป้าหมายความเสี่ยง (ผ่านเมื่อเท่ากับ 0% เท่านั้น)
+        function calPercentZeroTarget(prefix) {
+            const a = parseFloat(document.getElementById(prefix + '_A').value);
+            const b = parseFloat(document.getElementById(prefix + '_B').value);
+            const res = document.getElementById('res_' + prefix);
+            
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกตัวเลขให้ครบถ้วน'); return; }
+            
+            const score = (a * 100) / b;
+            const rounded = score.toFixed(2);
+            
+            if (score === 0) {
+                res.innerHTML = `<span style="color: #059669;">0% (ผ่านเกณฑ์ความปลอดภัย) ✅</span>`;
+            } else {
+                res.innerHTML = `<span style="color: #dc2626;">${rounded}% (พบอุบัติการณ์ความเสี่ยง) ❌</span>`;
             }
         }
     </script>
