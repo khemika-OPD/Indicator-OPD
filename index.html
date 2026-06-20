@@ -3,156 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPD Takhli - Indicators Hub 2027</title>
+    <title>OPD Takhli - Indicators Hub 2026</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background-color: #0d9488;
-            color: #ffffff;
-            padding: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .header-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .back-btn {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 0.875rem;
-            background-color: #0f766e;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: #0d9488; color: #ffffff; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .header-container { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .back-btn { color: #ffffff; text-decoration: none; font-size: 0.875rem; background-color: #0f766e; padding: 6px 12px; border-radius: 6px; font-weight: bold; }
+        main { flex-grow: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 32px 16px; }
         
-        main {
-            flex-grow: 1;
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 32px 16px;
-        }
-
-        /* ------------------ หน้าเลือกทางเข้าหลัก ------------------ */
-        .gateway-section {
-            display: grid;
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 24px;
-            margin-top: 40px;
-        }
-        @media (min-width: 768px) {
-            .gateway-section { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        }
-        .gate-card {
-            background: #ffffff;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            padding: 32px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .gate-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border-color: #0d9488;
-        }
+        .gateway-section { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 24px; margin-top: 40px; }
+        @media (min-width: 768px) { .gateway-section { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        .gate-card { background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 32px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s; }
+        .gate-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #0d9488; }
         .gate-icon { font-size: 4rem; margin-bottom: 16px; }
         .gate-title { font-size: 1.35rem; font-weight: bold; color: #111827; margin-bottom: 12px; }
         .gate-desc { font-size: 0.95rem; color: #4b5563; line-height: 1.5; margin-bottom: 24px; }
-        .gate-btn {
-            display: inline-block;
-            padding: 10px 24px;
-            background-color: #0d9488;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-        }
+        .gate-btn { display: inline-block; padding: 10px 24px; background-color: #0d9488; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; }
 
-        /* ------------------ หน้าจอระบบตัวชี้วัด ------------------ */
         .dashboard-container { display: none; }
         .tabs-menu { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 8px; }
-        .tab-btn {
-            padding: 10px 16px; background-color: #e5e7eb; color: #4b5563; border: none;
-            border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.875rem; white-space: nowrap;
-        }
+        .tab-btn { padding: 10px 16px; background-color: #e5e7eb; color: #4b5563; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.875rem; white-space: nowrap; }
         .tab-btn.active { background-color: #0d9488; color: #ffffff; }
         .tab-content { display: none; background-color: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb; }
         .tab-content.active { display: block; }
+        .m-title { font-size: 1.25rem; font-weight: bold; color: #0f766e; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid #ccfbf1; }
         
-        .m集中-title { font-size: 1.25rem; font-weight: bold; color: #0f766e; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid #ccfbf1; }
-        
-        /* การ์ดตัวชี้วัด + กล่องสูตรความรู้ */
-        .kpi-container {
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+        .kpi-container { background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .kpi-header-title { font-size: 1.1rem; font-weight: bold; color: #1f2937; margin-bottom: 8px; }
-        
-        /* กล่องสูตรคำนวณ (Knowledge Box) เพื่อกันลืม */
-        .formula-box {
-            background-color: #f0fdfa;
-            border: 1px dashed #2dd4bf;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: #0f766e;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-        .formula-display {
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            background: #e6fffa;
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-top: 4px;
-        }
+        .formula-box { background-color: #f0fdfa; border: 1px dashed #2dd4bf; padding: 12px; border-radius: 6px; font-size: 0.85rem; color: #0f766e; margin-bottom: 16px; line-height: 1.5; }
+        .formula-display { font-family: 'Courier New', Courier, monospace; font-weight: bold; background: #e6fffa; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 4px; }
 
         .input-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
         .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 0.8rem; font-weight: 500; color: #4b5563; }
-        .input-group input, .input-group select { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
-        
-        /* เน้นสไตล์ช่องปฏิทิน */
-        .date-picker-input {
-            background-color: #fff;
-            color: #1f2937;
-            cursor: pointer;
-            font-weight: 500;
-            border: 1px solid #0d9488 !important;
-        }
-
+        .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
+        .date-picker-input { background-color: #fff; border: 1px solid #0d9488 !important; font-weight: 500; }
         .calc-btn { padding: 8px 16px; background-color: #0d9488; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .calc-btn:hover { background-color: #0f766e; }
         .res-display { font-size: 1.05rem; font-weight: bold; margin-left: 8px; }
-
         footer { background-color: #1f2937; color: #9ca3af; text-align: center; padding: 16px; font-size: 0.875rem; border-top: 1px solid #374151; margin-top: auto; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="header-container">
             <h1>ศูนย์ข้อมูลและแดชบอร์ดตัวชี้วัดอัจฉริยะ</h1>
@@ -160,27 +53,22 @@
         </div>
     </header>
 
-    <!-- Main Section -->
     <main>
-        
-        <!-- ทางเลือก 2 ทางหลัก (Landing Gateway) -->
         <div id="gatewaySection" class="gateway-section">
             <div class="gate-card" onclick="openIndicators('opd')">
                 <div class="gate-icon">🏥</div>
                 <div class="gate-title">ตัวชี้วัดคุณภาพการพยาบาลผู้ป่วยนอก</div>
-                <div class="gate-desc">ระบบติดตามผลลัพธ์และคำนวณดัชนีชี้วัด 6 มิติคุณภาพพยาบาล (31 ตัวชี้วัด) อ้างอิงเกณฑ์มาตรฐานกองการพยาบาล สป.สธ.</div>
+                <div class="gate-desc">ระบบติดตามผลลัพธ์ 6 มิติคุณภาพพยาบาล (31 ตัวชี้วัด) ตามเกณฑ์กองการพยาบาล สป.สธ.</div>
                 <span class="gate-btn">เข้าใช้งานระบบ ➔</span>
             </div>
-
             <div class="gate-card" onclick="openIndicators('ncd')">
                 <div class="gate-icon">🩸</div>
                 <div class="gate-title">ตัวชี้วัดคุณภาพงานคลินิก NCD</div>
-                <div class="gate-desc">ระบบบันทึกผลการดำเนินงานคลินิกโรคไม่ติดต่อเรื้อรัง (เบาหวาน/ความดันโลหิตสูง) อัตราความครอบคลุมคัดกรอง และผลลัพธ์การคุมโรคประจำงวด</div>
+                <div class="gate-desc">ระบบบันทึกผลการดำเนินงานคลินิกโรคไม่ติดต่อเรื้อรัง (เบาหวาน/ความดันโลหิตสูง) ประจำงวด</div>
                 <span class="gate-btn">เข้าใช้งานระบบ ➔</span>
             </div>
         </div>
 
-        <!-- ==================== หน้าแสดงตัวชี้วัดฝั่ง OPD ==================== -->
         <div id="opdContainer" class="dashboard-container">
             <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="font-size:1.4rem;">📊 แดชบอร์ดตัวชี้วัดพยาบาลผู้ป่วยนอก (6 มิติ)</h2>
@@ -188,266 +76,165 @@
             </div>
 
             <div class="tabs-menu">
-                <button class="tab-btn active" onclick="switchTab(event, 'dim1')">มิติที่ 1 นำองค์กร</button>
-                <button class="tab-btn" onclick="switchTab(event, 'dim5')">มิติที่ 5 ระบบงาน</button>
-                <button class="tab-btn" onclick="switchTab(event, 'dim6')">มิติที่ 6 การบริการพยาบาล</button>
+                <button class="tab-btn active" onclick="switchTab(event, 'dim1')">มิติ 1 นำองค์กร</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim2')">มิติ 2 ประสิทธิภาพ</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim3')">มิติ 3 ผู้ใช้บริการ</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim4')">มิติ 4 ทรัพยากรบุคคล</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim5')">มิติ 5 ระบบงานสำคัญ</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim6')">มิติ 6 บริการพยาบาล</button>
             </div>
 
-            <!-- มิติที่ 1 นำองค์กร -->
             <div id="dim1" class="tab-content active">
-                <div class="m集中-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร</div>
-                
+                <div class="m-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร</div>
                 <div class="kpi-container">
                     <div class="kpi-header-title">1. ร้อยละของตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย (เป้าหมาย &ge; 80%)</div>
-                    <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ตัวชี้วัดหน่วยงานบริการพยาบาลที่เชื่อมโยงกับวิสัยทัศน์องค์กรพยาบาล และมีผลลัพธ์ดีกว่าค่าเป้าหมายที่กำหนด<br>
-                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย | • <strong>B:</strong> จำนวนตัวชี้วัดวิสัยทัศน์ทั้งหมด
-                    </div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย (A) * 100) / จำนวนตัวชี้วัดวิสัยทัศน์ทั้งหมด (B)</div>
                     <div class="input-row">
-                        <div class="input-group">
-                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
-                            <input type="date" class="date-picker-input" id="date_opd_d1_k1">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนตัวชี้วัดที่บรรลุ (A)</label>
-                            <input type="number" id="opd_d1_k1_A" placeholder="ระบุจำนวน">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนตัวชี้วัดทั้งหมด (B)</label>
-                            <input type="number" id="opd_d1_k1_B" placeholder="ระบุจำนวน">
-                        </div>
-                        <button class="calc-btn" onclick="calPercent('opd_d1_k1', 80, true)">คำนวณผล</button>
-                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k1">-</span></div>
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d1_k1"></div>
+                        <div class="input-group"><label>ตัวชี้วัดที่บรรลุ (A)</label><input type="number" id="opd_d1_k1_A"></div>
+                        <div class="input-group"><label>ตัวชี้วัดทั้งหมด (B)</label><input type="number" id="opd_d1_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d1_k1', 80, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k1">-</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- มิติที่ 5 ระบบงานและกระบวนการสำคัญ -->
-            <div id="dim5" class="tab-content">
-                <div class="m集中-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ</div>
-                
-                <!-- KPI 5.2 บันทึกทางการพยาบาล -->
+            <div id="dim2" class="tab-content">
+                <div class="m-title">📈 มิติที่ 2 ผลลัพธ์ด้านการสร้างประสิทธิผลของกระบวนการ</div>
                 <div class="kpi-container">
-                    <div class="kpi-header-title">2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐานการพยาบาลในโรงพยาบาล (เป้าหมาย = 100%)</div>
-                    <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> แบบฟอร์มบันทึกกิจกรรมการพยาบาลตามเกณฑ์มาตรฐานที่สุ่มตรวจเวชระเบียนผู้ใช้บริการหลังจำหน่าย (สุ่มอย่างน้อยร้อยละ 10 ของแฟ้มทั้งหมดต่อสัปดาห์ เศษทศนิยมปรับเพิ่ม 1 แฟ้ม)<br>
-                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนบันทึกทางการพยาบาลที่ครบถ้วนตามเกณฑ์ | • <strong>B:</strong> จำนวนบันทึกทางการพยาบาลที่สุ่มประเมินทั้งหมด
-                    </div>
+                    <div class="kpi-header-title">1. ร้อยละของตัวชี้วัดกระบวนการบริการพยาบาลหลักที่บรรลุค่าเป้าหมาย (เป้าหมาย &ge; 80%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนตัวชี้วัดกระบวนการหลักที่ผ่านเกณฑ์ (A) * 100) / จำนวนตัวชี้วัดกระบวนการพยาบาลทั้งหมด (B)</div>
                     <div class="input-row">
-                        <div class="input-group">
-                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
-                            <input type="date" class="date-picker-input" id="date_opd_d5_k2">
-                        </div>
-                        <div class="input-group">
-                            <label>บันทึกที่ครบถ้วนตามเกณฑ์ (A)</label>
-                            <input type="number" id="opd_d5_k2_A" placeholder="ระบุจำนวนแฟ้ม">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนแฟ้มที่สุ่มทั้งหมด (B)</label>
-                            <input type="number" id="opd_d5_k2_B" placeholder="ระบุจำนวนแฟ้ม">
-                        </div>
-                        <button class="calc-btn" onclick="calPercent('opd_d5_k2', 100, true)">คำนวณผล</button>
-                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d5_k2">-</span></div>
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d2_k1"></div>
+                        <div class="input-group"><label>ตัวชี้วัดที่ผ่านเกณฑ์ (A)</label><input type="number" id="opd_d2_k1_A"></div>
+                        <div class="input-group"><label>ตัวชี้วัดทั้งหมด (B)</label><input type="number" id="opd_d2_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d2_k1', 80, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d2_k1">-</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- มิติที่ 6 ผลลัพธ์การบริการพยาบาล -->
+            <div id="dim3" class="tab-content">
+                <div class="m-title">👥 มิติที่ 3 ผลลัพธ์ด้านการมุ่งเน้นผู้รับผลงานและผู้มีส่วนได้ส่วนเสีย</div>
+                <div class="kpi-container">
+                    <div class="kpi-header-title">1. ร้อยละของความพึงพอใจของผู้ใช้บริการพยาบาลผู้ป่วยนอก (เป้าหมาย &ge; 85%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนผู้ป่วยที่ประเมินความพึงพอใจระดับดีขึ้นไป (A) * 100) / จำนวนผู้ตอบแบบสอบถามทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d3_k1"></div>
+                        <div class="input-group"><label>พึงพอใจระดับดีขึ้นไป (A)</label><input type="number" id="opd_d3_k1_A"></div>
+                        <div class="input-group"><label>จำนวนผู้ตอบทั้งหมด (B)</label><input type="number" id="opd_d3_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d3_k1', 85, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d3_k1">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dim4" class="tab-content">
+                <div class="m-title">👩‍⚕️ มิติที่ 4 ผลลัพธ์ด้านการมุ่งเน้นทรัพยากรบุคคล</div>
+                <div class="kpi-container">
+                    <div class="kpi-header-title">1. ร้อยละของบุคลากรพยาบาลที่ได้รับการพัฒนาสมรรถนะตามตำแหน่งงาน (เป้าหมาย &ge; 80%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนพยาบาลที่ผ่านการอบรม/ประเมินสมรรถนะ (A) * 100) / จำนวนพยาบาลในตึกทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d4_k1"></div>
+                        <div class="input-group"><label>พยาบาลที่ผ่านสมรรถนะ (A)</label><input type="number" id="opd_d4_k1_A"></div>
+                        <div class="input-group"><label>พยาบาลในตึกทั้งหมด (B)</label><input type="number" id="opd_d4_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d4_k1', 80, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d4_k1">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dim5" class="tab-content">
+                <div class="m-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ</div>
+                <div class="kpi-container">
+                    <div class="kpi-header-title">2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐาน (เป้าหมาย = 100%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนแฟ้มที่บันทึกสมบูรณ์ (A) * 100) / จำนวนแฟ้มเวชระเบียนที่สุ่มตรวจทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d5_k2"></div>
+                        <div class="input-group"><label>บันทึกครบถ้วน (A)</label><input type="number" id="opd_d5_k2_A"></div>
+                        <div class="input-group"><label>จำนวนแฟ้มที่สุ่ม (B)</label><input type="number" id="opd_d5_k2_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k2', 100, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d5_k2">-</span></div>
+                    </div>
+                </div>
+            </div>
+
             <div id="dim6" class="tab-content">
-                <div class="m集中-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล</div>
-                
-                <!-- KPI 6.6 Re-visit -->
+                <div class="m-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล</div>
                 <div class="kpi-container">
                     <div class="kpi-header-title">6. อัตราการกลับเข้ารักษาซ้ําภายใน 48 ชั่วโมงโดยไม่ได้วางแผน (เป้าหมาย = 0%)</div>
-                    <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ผู้ป่วยกลับมารักษาซ้ำที่ OPD หรือ ER ภายใน 48 ชั่วโมงหลังจำหน่ายกลับบ้านเนื่องจากอาการไม่ทุเลาหรือทรุดลง โดยไม่ได้วินิจฉัยความเสี่ยง/วางแผนล่วงหน้า<br>
-                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนผู้ป่วยที่กลับเข้ารักษาซ้ำภายใน 48 ชั่วโมงโดยไม่ได้วางแผน | • <strong>B:</strong> จำนวนผู้ป่วยที่จำหน่ายกลับบ้านทั้งหมดในงวดเดียวกัน
-                    </div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนผู้ป่วยที่กลับมารักษาซ้ำใน 48 ชม. (A) * 100) / จำนวนผู้ป่วยจำหน่ายกลับบ้านหมด (B)</div>
                     <div class="input-row">
-                        <div class="input-group">
-                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
-                            <input type="date" class="date-picker-input" id="date_opd_d6_k6">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนเคสกลับมาซ้ำ (A)</label>
-                            <input type="number" id="opd_d6_k6_A" placeholder="ระบุจำนวนเคส">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนเคสจำหน่ายกลับหมด (B)</label>
-                            <input type="number" id="opd_d6_k6_B" placeholder="ระบุจำนวนเคส">
-                        </div>
-                        <button class="calc-btn" onclick="calPercentZeroTarget('opd_d6_k6')">คำนวณผล</button>
-                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d6_k6">-</span></div>
-                    </div>
-                </div>
-
-                <!-- KPI 6.7 Medication Error E-I -->
-                <div class="kpi-container">
-                    <div class="kpi-header-title">7. ร้อยละของความคลาดเคลื่อนจากการบริหารยา/สารน้ํามีความรุนแรงระดับ E-I (เป้าหมาย = 0%)</div>
-                    <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> การบริหารยาไม่ถูกต้องตามหลัก 10Rs (Right drug, patient, dose, route, time, documentation, refuse, history, interaction, education) และเกิดผลกระทบระดับต้องได้รับการรักษา (ระดับ E-I)<br>
-                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนครั้งที่เกิดความคลาดเคลื่อนรุนแรงระดับ E-I | • <strong>B:</strong> จำนวนครั้งที่เกิดความคลาดเคลื่อนยารวมทั้งหมด (ระดับ A-I)
-                    </div>
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
-                            <input type="date" class="date-picker-input" id="date_opd_d6_k7">
-                        </div>
-                        <div class="input-group">
-                            <label>ความคลาดเคลื่อนระดับ E-I (A)</label>
-                            <input type="number" id="opd_d6_k7_A" placeholder="ระบุจำนวนครั้ง">
-                        </div>
-                        <div class="input-group">
-                            <label>ความคลาดเคลื่อนรวม A-I (B)</label>
-                            <input type="number" id="opd_d6_k7_B" placeholder="ระบุจำนวนครั้ง">
-                        </div>
-                        <button class="calc-btn" onclick="calPercentZeroTarget('opd_d6_k7')">คำนวณผล</button>
-                        <div class="res-display">ผลลัพธ์: <span id="res_opd_d6_k7">-</span></div>
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d6_k6"></div>
+                        <div class="input-group"><label>เคสกลับมาซ้ำ (A)</label><input type="number" id="opd_d6_k6_A"></div>
+                        <div class="input-group"><label>เคสจำหน่ายทั้งหมด (B)</label><input type="number" id="opd_d6_k6_B"></div>
+                        <button class="calc-btn" onclick="calPercentZeroTarget('opd_d6_k6')">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d6_k6">-</span></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== หน้าแสดงตัวชี้วัดฝั่ง NCD ==================== -->
         <div id="ncdContainer" class="dashboard-container">
             <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="font-size:1.4rem;">📊 ระบบงานและตัวชี้วัดคุณภาพงานคลินิก NCD</h2>
                 <button onclick="showGateway()" style="padding:6px 12px; background:#4b5563; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">🔄 สลับสายงาน</button>
             </div>
-
             <div class="tab-content active">
-                <div class="m集中-title">🩸 อัตราการควบคุมโรคประจำคลินิก NCD</div>
-
-                <!-- NCD KPI 1: คุมความดัน -->
+                <div class="m-title">🩸 อัตราการควบคุมโรคประจำคลินิก NCD</div>
                 <div class="kpi-container">
                     <div class="kpi-header-title">1. ร้อยละของผู้ป่วยโรคความดันโลหิตสูงที่ควบคุมความดันโลหิตได้ดีตามเกณฑ์ (เป้าหมาย &ge; 80%)</div>
-                    <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ผู้ป่วย Hypertension ในทะเบียนที่มารับบริการและวัดค่าความดันเฉลี่ยอยู่ในเกณฑ์ควบคุมได้ดี (&lt; 140/90 mmHg)<br>
-                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนผู้ป่วยความดันโลหิตสูงที่คุมความดันได้ตามเกณฑ์ | • <strong>B:</strong> จำนวนผู้ป่วยความดันโลหิตสูงที่ได้รับการตรวจวัดทั้งหมดในงวดนั้น
-                    </div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนผู้ป่วย HT ที่คุมความดันได้ดี < 140/90 mmHg (A) * 100) / ผู้ป่วย HT ที่มาตรวจวัดทั้งหมด (B)</div>
                     <div class="input-row">
-                        <div class="input-group">
-                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
-                            <input type="date" class="date-picker-input" id="date_ncd_k1">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนเคสที่คุมได้ดี (A)</label>
-                            <input type="number" id="ncd_k1_A" placeholder="ระบุจำนวนเคส">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนเคสมาตรวจทั้งหมด (B)</label>
-                            <input type="number" id="ncd_k1_B" placeholder="ระบุจำนวนเคส">
-                        </div>
-                        <button class="calc-btn" onclick="calPercent('ncd_k1', 80, true)">ประมวลผล</button>
-                        <div class="res-display">ผลลัพธ์งวด: <span id="res_ncd_k1">-</span></div>
-                    </div>
-                </div>
-
-                <!-- NCD KPI 2: HbA1c -->
-                <div class="kpi-container">
-                    <div class="kpi-header-title">2. ร้อยละของผู้ป่วยเบาหวานที่มีผลตรวจระดับน้ำตาลสะสม HbA1c &lt; 7% (เป้าหมาย &ge; 40%)</div>
-                    <div class="formula-box">
-                        <strong>📖 นิยาม:</strong> ผู้ป่วย Diabetes Mellitus ที่ได้รับการเจาะตรวจเลือดประจำปี/ตามงวดบริการและมีค่าน้ำตาลสะสมควบคุมได้ดีตามเกณฑ์<br>
-                        <strong>🧮 สูตรคำนวณ:</strong> <span class="formula-display">สูตร = (A * 100) / B</span><br>
-                        • <strong>A:</strong> จำนวนผู้ป่วยเบาหวานที่มีผลตรวจ HbA1c &lt; 7% | • <strong>B:</strong> จำนวนผู้ป่วยเบาหวานที่ได้รับการเจาะตรวจ HbA1c ทั้งหมด
-                    </div>
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label>📅 วันที่บันทึกข้อมูล (พ.ศ.)</label>
-                            <input type="date" class="date-picker-input" id="date_ncd_k2">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนเคส HbA1c &lt; 7% (A)</label>
-                            <input type="number" id="ncd_k2_A" placeholder="ระบุจำนวนเคส">
-                        </div>
-                        <div class="input-group">
-                            <label>จำนวนเคสเจาะเลือดทั้งหมด (B)</label>
-                            <input type="number" id="ncd_k2_B" placeholder="ระบุจำนวนเคส">
-                        </div>
-                        <button class="calc-btn" onclick="calPercent('ncd_k2', 40, true)">ประมวลผล</button>
-                        <div class="res-display">ผลลัพธ์งวด: <span id="res_ncd_k2">-</span></div>
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_ncd_k1"></div>
+                        <div class="input-group"><label>เคสที่คุมได้ดี (A)</label><input type="number" id="ncd_k1_A"></div>
+                        <div class="input-group"><label>เคสมาตรวจทั้งหมด (B)</label><input type="number" id="ncd_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('ncd_k1', 80, true)">ประมวลผล</button><div class="res-display">ผลลัพธ์: <span id="res_ncd_k1">-</span></div>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- Footer -->
     <footer>
         <p>© 2026 งานผู้ป่วยนอก โรงพยาบาลตาคลี | พัฒนาโดย Khemika-OPD Takhli (Khemika Pongsri)</p>
     </footer>
 
-    <!-- JavaScript สำหรับควบคุมระบบปฏิทินและคำนวณ -->
     <script>
-        // ฟังก์ชันตั้งค่าวันที่ปัจจุบันเป็นค่าเริ่มต้นให้กับทุกปฏิทินในหน้าเว็บเพื่อความสะดวก
         window.onload = function() {
             const today = new Date().toISOString().split('T')[0];
-            const dateInputs = document.querySelectorAll('.date-picker-input');
-            dateInputs.forEach(input => { input.value = today; });
+            document.querySelectorAll('.date-picker-input').forEach(input => { input.value = today; });
         };
-
         function openIndicators(type) {
             document.getElementById('gatewaySection').style.display = 'none';
             if(type === 'opd') { document.getElementById('opdContainer').style.display = 'block'; } 
             else if(type === 'ncd') { document.getElementById('ncdContainer').style.display = 'block'; }
         }
-
         function showGateway() {
             document.getElementById('opdContainer').style.display = 'none';
             document.getElementById('ncdContainer').style.display = 'none';
             document.getElementById('gatewaySection').style.display = 'grid';
         }
-
         function switchTab(event, tabId) {
-            const tabContents = document.getElementsByClassName('tab-content');
-            for (let i = 0; i < tabContents.length; i++) { tabContents[i].classList.remove('active'); }
-            const tabButtons = document.getElementsByClassName('tab-btn');
-            for (let i = 0; i < tabButtons.length; i++) { tabButtons[i].classList.remove('active'); }
+            const contents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < contents.length; i++) { contents[i].classList.remove('active'); }
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < buttons.length; i++) { buttons[i].classList.remove('active'); }
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
         }
-
-        // ฟังก์ชันคำนวณทั่วไปเป้าหมายเชิงบวก (ผ่านเมื่อ >= Target)
         function calPercent(prefix, targetScore, isGreaterTrue) {
             const a = parseFloat(document.getElementById(prefix + '_A').value);
             const b = parseFloat(document.getElementById(prefix + '_B').value);
-            const dateVal = document.getElementById('date_' + prefix).value;
             const res = document.getElementById('res_' + prefix);
-            
-            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกตัวเลขให้ครบถ้วน และตัวหาร (B) ต้องไม่เป็น 0'); return; }
-            
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกตัวเลขให้ครบถ้วน และตัวหารต้องไม่เป็น 0'); return; }
             const score = (a * 100) / b;
             const rounded = score.toFixed(2);
-            
-            if (isGreaterTrue && score >= targetScore) {
-                res.innerHTML = `<span style="color: #059669;">${rounded}% (ผ่านเกณฑ์) ✅</span>`;
-            } else {
-                res.innerHTML = `<span style="color: #dc2626;">${rounded}% (ไม่ผ่านเกณฑ์) ❌</span>`;
-            }
+            if (score >= targetScore) { res.innerHTML = `<span style="color: #059669;">${rounded}% ✅</span>`; } 
+            else { res.innerHTML = `<span style="color: #dc2626;">${rounded}% ❌</span>`; }
         }
-
-        // ฟังก์ชันคำนวณเป้าหมายความเสี่ยง (ผ่านเมื่อเท่ากับ 0% เท่านั้น)
         function calPercentZeroTarget(prefix) {
             const a = parseFloat(document.getElementById(prefix + '_A').value);
             const b = parseFloat(document.getElementById(prefix + '_B').value);
             const res = document.getElementById('res_' + prefix);
-            
-            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกตัวเลขให้ครบถ้วน'); return; }
-            
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ครบถ้วน'); return; }
             const score = (a * 100) / b;
-            const rounded = score.toFixed(2);
-            
-            if (score === 0) {
-                res.innerHTML = `<span style="color: #059669;">0% (ผ่านเกณฑ์ความปลอดภัย) ✅</span>`;
-            } else {
-                res.innerHTML = `<span style="color: #dc2626;">${rounded}% (พบอุบัติการณ์ความเสี่ยง) ❌</span>`;
-            }
+            if (score === 0) { res.innerHTML = `<span style="color: #059669;">0% ✅</span>`; } 
+            else { res.innerHTML = `<span style="color: #dc2626;">${score.toFixed(2)}% ❌</span>`; }
         }
     </script>
 </body>
