@@ -25,22 +25,21 @@
         .tabs-menu { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 8px; }
         .tab-btn { padding: 10px 16px; background-color: #e5e7eb; color: #4b5563; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.875rem; white-space: nowrap; }
         .tab-btn.active { background-color: #0d9488; color: #ffffff; }
-        .tab-content { display: none; background-color: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb; }
+        .tab-content { display: none; background-color: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e5e7eb; margin-bottom: 20px; }
         .tab-content.active { display: block; }
         .m-title { font-size: 1.25rem; font-weight: bold; color: #0f766e; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid #ccfbf1; }
         
         .kpi-container { background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .kpi-header-title { font-size: 1.1rem; font-weight: bold; color: #1f2937; margin-bottom: 8px; }
         .formula-box { background-color: #f0fdfa; border: 1px dashed #2dd4bf; padding: 12px; border-radius: 6px; font-size: 0.85rem; color: #0f766e; margin-bottom: 16px; line-height: 1.5; }
-        .formula-display { font-family: 'Courier New', Courier, monospace; font-weight: bold; background: #e6fffa; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 4px; }
 
         .input-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
-        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; min-width: 150px; }
         .input-group label { font-size: 0.8rem; font-weight: 500; color: #4b5563; }
-        .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
+        .input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; width: 100%; }
         .date-picker-input { background-color: #fff; border: 1px solid #0d9488 !important; font-weight: 500; }
-        .calc-btn { padding: 8px 16px; background-color: #0d9488; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .res-display { font-size: 1.05rem; font-weight: bold; margin-left: 8px; }
+        .calc-btn { padding: 8px 16px; background-color: #0d9488; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; height: 38px; }
+        .res-display { font-size: 1.05rem; font-weight: bold; margin-left: 8px; align-self: center; }
         footer { background-color: #1f2937; color: #9ca3af; text-align: center; padding: 16px; font-size: 0.875rem; border-top: 1px solid #374151; margin-top: auto; }
     </style>
 </head>
@@ -49,7 +48,7 @@
     <header>
         <div class="header-container">
             <h1>ศูนย์ข้อมูลและแดชบอร์ดตัวชี้วัดอัจฉริยะ</h1>
-            <a href="index.html" class="back-btn">⬅️ หน้าแรกระบบ</a>
+            <a href="#" onclick="showGateway()" class="back-btn">⬅️ หน้าแรกระบบ</a>
         </div>
     </header>
 
@@ -70,7 +69,7 @@
         </div>
 
         <div id="opdContainer" class="dashboard-container">
-            <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <h2 style="font-size:1.4rem;">📊 แดชบอร์ดตัวชี้วัดพยาบาลผู้ป่วยนอก (6 มิติ)</h2>
                 <button onclick="showGateway()" style="padding:6px 12px; background:#4b5563; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">🔄 สลับสายงาน</button>
             </div>
@@ -85,7 +84,8 @@
             </div>
 
             <div id="dim1" class="tab-content active">
-                <div class="m-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร</div>
+                <div class="m-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร (3 ตัวชี้วัด)</div>
+                
                 <div class="kpi-container">
                     <div class="kpi-header-title">1. ร้อยละของตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย (เป้าหมาย &ge; 80%)</div>
                     <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย (A) * 100) / จำนวนตัวชี้วัดวิสัยทัศน์ทั้งหมด (B)</div>
@@ -93,77 +93,354 @@
                         <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d1_k1"></div>
                         <div class="input-group"><label>ตัวชี้วัดที่บรรลุ (A)</label><input type="number" id="opd_d1_k1_A"></div>
                         <div class="input-group"><label>ตัวชี้วัดทั้งหมด (B)</label><input type="number" id="opd_d1_k1_B"></div>
-                        <button class="calc-btn" onclick="calPercent('opd_d1_k1', 80, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k1">-</span></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d1_k1', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">2. ร้อยละของโครงการ/กิจกรรมดําเนินการตามกระบวนการควบคุมภายในที่มีคะแนนความเสี่ยงลดลง (เป้าหมาย &ge; 80%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนโครงการ/กิจกรรมที่มีคะแนนความเสี่ยงลดลง (A) * 100) / จำนวนโครงการ/กิจกรรมควบคุมภายในทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d1_k2"></div>
+                        <div class="input-group"><label>โครงการที่เสี่ยงลดลง (A)</label><input type="number" id="opd_d1_k2_A"></div>
+                        <div class="input-group"><label>โครงการทั้งหมด (B)</label><input type="number" id="opd_d1_k2_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d1_k2', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">3. ร้อยละของบุคลากรพยาบาลที่มีผลการประเมินจริยธรรมจรรยาบรรณวิชาชีพผ่านเกณฑ์ที่กําหนด (เป้าหมาย &ge; 80%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนบุคลากรที่ประเมินผ่าน 3-5 คะแนน (A) * 100) / จำนวนบุคลากรพยาบาลทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d1_k3"></div>
+                        <div class="input-group"><label>บุคลากรที่ผ่านเกณฑ์ (A)</label><input type="number" id="opd_d1_k3_A"></div>
+                        <div class="input-group"><label>บุคลากรทั้งหมด (B)</label><input type="number" id="opd_d1_k3_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d1_k3', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d1_k3">-</span></div>
                     </div>
                 </div>
             </div>
 
             <div id="dim2" class="tab-content">
-                <div class="m-title">📈 มิติที่ 2 ผลลัพธ์ด้านการสร้างประสิทธิผลของกระบวนการ</div>
+                <div class="m-title">📈 มิติที่ 2 ผลลัพธ์ด้านการสร้างประสิทธิผลของกระบวนการ (4 ตัวชี้วัด)</div>
+                
                 <div class="kpi-container">
-                    <div class="kpi-header-title">1. ร้อยละของตัวชี้วัดกระบวนการบริการพยาบาลหลักที่บรรลุค่าเป้าหมาย (เป้าหมาย &ge; 80%)</div>
-                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนตัวชี้วัดกระบวนการหลักที่ผ่านเกณฑ์ (A) * 100) / จำนวนตัวชี้วัดกระบวนการพยาบาลทั้งหมด (B)</div>
+                    <div class="kpi-header-title">1. ผลิตภาพของงานการพยาบาลผู้ป่วยนอก (Nursing Productivity) (เป้าหมาย 90% - 110%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนชั่วโมงความต้องการการพยาบาลรวม (A) * 100) / จำนวนชั่วโมงปฏิบัติงานจริงของพยาบาลรวม (B)</div>
                     <div class="input-row">
                         <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d2_k1"></div>
-                        <div class="input-group"><label>ตัวชี้วัดที่ผ่านเกณฑ์ (A)</label><input type="number" id="opd_d2_k1_A"></div>
-                        <div class="input-group"><label>ตัวชี้วัดทั้งหมด (B)</label><input type="number" id="opd_d2_k1_B"></div>
-                        <button class="calc-btn" onclick="calPercent('opd_d2_k1', 80, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d2_k1">-</span></div>
+                        <div class="input-group"><label>ชั่วโมงความต้องการ (A)</label><input type="number" id="opd_d2_k1_A"></div>
+                        <div class="input-group"><label>ชั่วโมงขึ้นเวรจริง (B)</label><input type="number" id="opd_d2_k1_B"></div>
+                        <button class="calc-btn" onclick="calProductivity('opd_d2_k1')">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d2_k1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">2. ระยะเวลารอคอยบริการพยาบาลผู้ป่วยนอกเฉลี่ย (ตามบริบทหน่วยงาน)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> ระยะเวลารอคอยบริการพยาบาลผู้ป่วยนอกรวมทั้งหมด (A) / จำนวนผู้ป่วยนอกทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d2_k2"></div>
+                        <div class="input-group"><label>เวลารอคอยรวม (นาที) (A)</label><input type="number" id="opd_d2_k2_A"></div>
+                        <div class="input-group"><label>จำนวนผู้ป่วยทั้งหมด (B)</label><input type="number" id="opd_d2_k2_B"></div>
+                        <button class="calc-btn" onclick="calAverage('opd_d2_k2')">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d2_k2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">3. ร้อยละของบุคลากรพยาบาลที่มีชั่วโมงปฏิบัติงานเฉลี่ย > 60 ชั่วโมงต่อสัปดาห์ (เป้าหมาย = 0%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนพยาบาลที่ทำงาน > 60 ชม./สัปดาห์ (A) * 100) / จำนวนพยาบาลทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d2_k3"></div>
+                        <div class="input-group"><label>จำนวนพยาบาลที่เกินเกณฑ์ (A)</label><input type="number" id="opd_d2_k3_A"></div>
+                        <div class="input-group"><label>จำนวนพยาบาลทั้งหมด (B)</label><input type="number" id="opd_d2_k3_B"></div>
+                        <button class="calc-btn" onclick="calZeroTarget('opd_d2_k3')">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d2_k3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">4. ร้อยละของอุบัติการณ์/ความเสี่ยงทางการพยาบาลได้รับการจัดการทันเวลา (เป้าหมาย &ge; 80%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนอุบัติการณ์ที่จัดการทันเวลา (A) * 100) / จำนวนอุบัติการณ์ทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d2_k4"></div>
+                        <div class="input-group"><label>ความเสี่ยงที่จัดการทัน (A)</label><input type="number" id="opd_d2_k4_A"></div>
+                        <div class="input-group"><label>ความเสี่ยงทั้งหมด (B)</label><input type="number" id="opd_d2_k4_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d2_k4', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d2_k4">-</span></div>
                     </div>
                 </div>
             </div>
 
             <div id="dim3" class="tab-content">
-                <div class="m-title">👥 มิติที่ 3 ผลลัพธ์ด้านการมุ่งเน้นผู้รับผลงานและผู้มีส่วนได้ส่วนเสีย</div>
+                <div class="m-title">👥 มิติที่ 3 ผลลัพธ์ด้านผู้ใช้บริการและผู้มีส่วนได้ส่วนเสีย (8 ตัวชี้วัด)</div>
+                
                 <div class="kpi-container">
-                    <div class="kpi-header-title">1. ร้อยละของความพึงพอใจของผู้ใช้บริการพยาบาลผู้ป่วยนอก (เป้าหมาย &ge; 85%)</div>
-                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนผู้ป่วยที่ประเมินความพึงพอใจระดับดีขึ้นไป (A) * 100) / จำนวนผู้ตอบแบบสอบถามทั้งหมด (B)</div>
+                    <div class="kpi-header-title">1. ร้อยละความพึงพอใจของผู้ใช้บริการต่อบริการพยาบาล (เป้าหมาย &ge; 80%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (คะแนนความพึงพอใจที่ได้รวม (A) * 100) / คะแนนเต็มรวมของแบบสอบถามทั้งหมด (B)</div>
                     <div class="input-row">
-                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d3_k1"></div>
-                        <div class="input-group"><label>พึงพอใจระดับดีขึ้นไป (A)</label><input type="number" id="opd_d3_k1_A"></div>
-                        <div class="input-group"><label>จำนวนผู้ตอบทั้งหมด (B)</label><input type="number" id="opd_d3_k1_B"></div>
-                        <button class="calc-btn" onclick="calPercent('opd_d3_k1', 85, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d3_k1">-</span></div>
+                        <div class="input-group"><label>คะแนนที่ได้รวม (A)</label><input type="number" id="opd_d3_k1_A"></div>
+                        <div class="input-group"><label>คะแนนเต็มรวม (B)</label><input type="number" id="opd_d3_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d3_k1', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d3_k1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">2. ร้อยละความพึงพอใจของผู้มีส่วนได้ส่วนเสียต่อหน่วยงานบริการพยาบาล (เป้าหมาย &ge; 80%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>คะแนนที่ได้รวม (A)</label><input type="number" id="opd_d3_k2_A"></div>
+                        <div class="input-group"><label>คะแนนเต็มรวม (B)</label><input type="number" id="opd_d3_k2_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d3_k2', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d3_k2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">3. ร้อยละความไม่พึงพอใจของผู้ใช้บริการต่อบริการพยาบาล (เป้าหมาย < 5%)</div>
+                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนรายการประเมินที่ไม่พึงพอใจ (A) * 100) / จำนวนรายการที่ประเมินทั้งหมด (B)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>รายการที่ไม่พึงพอใจ (A)</label><input type="number" id="opd_d3_k3_A"></div>
+                        <div class="input-group"><label>รายการทั้งหมด (B)</label><input type="number" id="opd_d3_k3_B"></div>
+                        <button class="calc-btn" onclick="calLessPercent('opd_d3_k3', 5)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d3_k3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">4-7. จำนวนข้อร้องเรียนในมิติต่างๆ (เป้าหมาย = 0 รายเรื่อง)</div>
+                    <div class="input-row" style="gap:20px;">
+                        <div class="input-group"><label>4. สิทธิ/ละเมิดสิทธิ</label><input type="number" id="opd_d3_k4" value="0"></div>
+                        <div class="input-group"><label>5. ละเมิดสิทธิกลุ่มเฉพาะ</label><input type="number" id="opd_d3_k5" value="0"></div>
+                        <div class="input-group"><label>6. พฤติกรรมบริการ</label><input type="number" id="opd_d3_k6" value="0"></div>
+                        <div class="input-group"><label>7. ละเมิดข้อมูลส่วนบุคคล</label><input type="number" id="opd_d3_k7" value="0"></div>
+                        <button class="calc-btn" onclick="checkComplaints()">ตรวจสอบ</button>
+                        <div class="res-display"><span id="res_complaints">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">8. ร้อยละของการแก้ไขและ/หรือการตอบกลับข้อร้องเรียนของผู้ใช้บริการ (เป้าหมาย &ge; 80%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>ข้อร้องเรียนที่จัดการเสร็จ (A)</label><input type="number" id="opd_d3_k8_A"></div>
+                        <div class="input-group"><label>ข้อร้องเรียนรวม (B)</label><input type="number" id="opd_d3_k8_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d3_k8', 80)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d3_k8">-</span></div>
                     </div>
                 </div>
             </div>
 
             <div id="dim4" class="tab-content">
-                <div class="m-title">👩‍⚕️ มิติที่ 4 ผลลัพธ์ด้านการมุ่งเน้นทรัพยากรบุคคล</div>
+                <div class="m-title">👩‍⚕️ มิติที่ 4 ผลลัพธ์ด้านการมุ่งเน้นทรัพยากรบุคคล (9 ตัวชี้วัด)</div>
+                
                 <div class="kpi-container">
-                    <div class="kpi-header-title">1. ร้อยละของบุคลากรพยาบาลที่ได้รับการพัฒนาสมรรถนะตามตำแหน่งงาน (เป้าหมาย &ge; 80%)</div>
-                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนพยาบาลที่ผ่านการอบรม/ประเมินสมรรถนะ (A) * 100) / จำนวนพยาบาลในตึกทั้งหมด (B)</div>
+                    <div class="kpi-header-title">1. ร้อยละความผูกพันของบุคลากรพยาบาล (&ge; 80%)</div>
                     <div class="input-row">
-                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d4_k1"></div>
-                        <div class="input-group"><label>พยาบาลที่ผ่านสมรรถนะ (A)</label><input type="number" id="opd_d4_k1_A"></div>
-                        <div class="input-group"><label>พยาบาลในตึกทั้งหมด (B)</label><input type="number" id="opd_d4_k1_B"></div>
-                        <button class="calc-btn" onclick="calPercent('opd_d4_k1', 80, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d4_k1">-</span></div>
+                        <div class="input-group"><label>คะแนนรวมที่ได้</label><input type="number" id="opd_d4_k1_A"></div>
+                        <div class="input-group"><label>คะแนนเต็ม</label><input type="number" id="opd_d4_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d4_k1', 80)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">2. ร้อยละความพึงพอใจในงานและบรรยากาศองค์กร (&ge; 80%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>คะแนนรวมที่ได้</label><input type="number" id="opd_d4_k2_A"></div>
+                        <div class="input-group"><label>คะแนนเต็ม</label><input type="number" id="opd_d4_k2_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d4_k2', 80)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">3. ร้อยละการโอนย้ายและลาออกของบุคลากรพยาบาล (&le; 1%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>ย้าย/ลาออก (คน)</label><input type="number" id="opd_d4_k3_A"></div>
+                        <div class="input-group"><label>พยาบาลทั้งหมด (คน)</label><input type="number" id="opd_d4_k3_B"></div>
+                        <button class="calc-btn" onclick="calLessPercent('opd_d4_k3', 1)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">4-9. ตัวชี้วัดด้านสมรรถนะ, การอบรมฟื้นฟู (CPR/IC), และการตรวจสุขภาพประจำปี</div>
+                    <div style="display:grid; gap:15px; margin-top:10px;">
+                        <div class="input-row">
+                            <div style="width:300px; font-size:0.9rem;">4. พยาบาลมีสมรรถนะตามเกณฑ์ (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>ผ่านเกณฑ์ (คน)</label><input type="number" id="opd_d4_k4_A"></div>
+                            <div class="input-group"><label>ทั้งหมด (คน)</label><input type="number" id="opd_d4_k4_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d4_k4', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k4">-</span></div>
+                        </div>
+                        <div class="input-row">
+                            <div style="width:300px; font-size:0.9rem;">5. อบรม CPR ขั้นพื้นฐาน (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>อบรมแล้ว (คน)</label><input type="number" id="opd_d4_k5_A"></div>
+                            <div class="input-group"><label>ทั้งหมด (คน)</label><input type="number" id="opd_d4_k5_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d4_k5', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k5">-</span></div>
+                        </div>
+                        <div class="input-row">
+                            <div style="width:300px; font-size:0.9rem;">6. อบรม CPR ขั้นสูง (เป้าหมาย &ge; 80%)</div>
+                            <div class="input-group"><label>อบรมแล้ว (คน)</label><input type="number" id="opd_d4_k6_A"></div>
+                            <div class="input-group"><label>ทั้งหมด (คน)</label><input type="number" id="opd_d4_k6_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d4_k6', 80)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k6">-</span></div>
+                        </div>
+                        <div class="input-row">
+                            <div style="width:300px; font-size:0.9rem;">7. อบรมเรื่องการควบคุมการติดเชื้อ (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>อบรมแล้ว (คน)</label><input type="number" id="opd_d4_k7_A"></div>
+                            <div class="input-group"><label>ทั้งหมด (คน)</label><input type="number" id="opd_d4_k7_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d4_k7', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k7">-</span></div>
+                        </div>
+                        <div class="input-row">
+                            <div style="width:300px; font-size:0.9rem;">8. ได้รับการตรวจสุขภาพตามความเสี่ยง (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>ตรวจครบ (คน)</label><input type="number" id="opd_d4_k8_A"></div>
+                            <div class="input-group"><label>ทั้งหมด (คน)</label><input type="number" id="opd_d4_k8_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d4_k8', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k8">-</span></div>
+                        </div>
+                        <div class="input-row">
+                            <div style="width:300px; font-size:0.9rem;">9. พยาบาลที่บาดเจ็บได้รับการดูแลตามแนวทาง (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>ได้รับการดูแล (A)</label><input type="number" id="opd_d4_k9_A"></div>
+                            <div class="input-group"><label>เจ็บป่วยสะสม (B)</label><input type="number" id="opd_d4_k9_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d4_k9', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d4_k9">-</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="dim5" class="tab-content">
-                <div class="m-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ</div>
+                <div class="m-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ (6 ตัวชี้วัด)</div>
+                
                 <div class="kpi-container">
-                    <div class="kpi-header-title">2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐาน (เป้าหมาย = 100%)</div>
-                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนแฟ้มที่บันทึกสมบูรณ์ (A) * 100) / จำนวนแฟ้มเวชระเบียนที่สุ่มตรวจทั้งหมด (B)</div>
+                    <div class="kpi-header-title">1. ร้อยละของบุคลากรพยาบาลที่ปฏิบัติตามแนวทางปฏิบัติการพยาบาล (เป้าหมาย 100%)</div>
                     <div class="input-row">
-                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d5_k2"></div>
-                        <div class="input-group"><label>บันทึกครบถ้วน (A)</label><input type="number" id="opd_d5_k2_A"></div>
-                        <div class="input-group"><label>จำนวนแฟ้มที่สุ่ม (B)</label><input type="number" id="opd_d5_k2_B"></div>
-                        <button class="calc-btn" onclick="calPercent('opd_d5_k2', 100, true)">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d5_k2">-</span></div>
+                        <div class="input-group"><label>ปฏิบัติตามเกณฑ์ (A)</label><input type="number" id="opd_d5_k1_A"></div>
+                        <div class="input-group"><label>สุ่มตรวจทั้งหมด (B)</label><input type="number" id="opd_d5_k1_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k1', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d5_k1">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐาน (สุ่มตรวจอย่างน้อย 10%) (เป้าหมาย 100%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>บันทึกสมบูรณ์ (A)</label><input type="number" id="opd_d5_k2_A"></div>
+                        <div class="input-group"><label>แฟ้มที่สุ่มตรวจ (B)</label><input type="number" id="opd_d5_k2_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k2', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d5_k2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">3. ร้อยละของอุบัติการณ์ภัยพิบัติ/ภาวะฉุกเฉินได้รับการจัดการตามกระบวนการ (เป้าหมาย 100%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>ได้รับการจัดการ (A)</label><input type="number" id="opd_d5_k3_A"></div>
+                        <div class="input-group"><label>เหตุการณ์ที่เกิดรวม (B)</label><input type="number" id="opd_d5_k3_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k3', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d5_k3">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">4. ร้อยละของฐานข้อมูลจําเป็นที่นํามาใช้ประโยชน์ทางการพยาบาล (เป้าหมาย &ge; 80%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>ฐานข้อมูลที่นำไปใช้ (A)</label><input type="number" id="opd_d5_k4_A"></div>
+                        <div class="input-group"><label>ฐานข้อมูลจำเป็นทั้งหมด (B)</label><input type="number" id="opd_d5_k4_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k4', 80)">คำนวณ</button><div class="res-display"><span id="res_opd_d5_k4">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">5. ร้อยละขององค์ความรู้/นวัตกรรมพยาบาลที่พัฒนาด้วย KM และนําไปใช้ (เป้าหมาย &ge; 80%)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>นวัตกรรมที่ถูกนำไปใช้ (A)</label><input type="number" id="opd_d5_k5_A"></div>
+                        <div class="input-group"><label>นวัตกรรมที่พัฒนาทั้งหมด (B)</label><input type="number" id="opd_d5_k5_B"></div>
+                        <button class="calc-btn" onclick="calPercent('opd_d5_k5', 80)">คำนวณ</button><div class="res-display"><span id="res_opd_d5_k5">-</span></div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">6. จำนวนอุบัติการณ์ความไม่พร้อมต่อการช่วยชีวิตฉุกเฉิน (เป้าหมาย = 0 ครั้ง)</div>
+                    <div class="input-row">
+                        <div class="input-group"><label>จำนวนครั้งที่ไม่พร้อม</label><input type="number" id="opd_d5_k6_A" value="0"></div>
+                        <button class="calc-btn" onclick="calZeroIncident('opd_d5_k6')">ตรวจสอบ</button><div class="res-display"><span id="res_opd_d5_k6">-</span></div>
                     </div>
                 </div>
             </div>
 
             <div id="dim6" class="tab-content">
-                <div class="m-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล</div>
+                <div class="m-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล (11 ตัวชี้วัด)</div>
+                
                 <div class="kpi-container">
-                    <div class="kpi-header-title">6. อัตราการกลับเข้ารักษาซ้ําภายใน 48 ชั่วโมงโดยไม่ได้วางแผน (เป้าหมาย = 0%)</div>
-                    <div class="formula-box"><strong>🧮 สูตร:</strong> (จำนวนผู้ป่วยที่กลับมารักษาซ้ำใน 48 ชม. (A) * 100) / จำนวนผู้ป่วยจำหน่ายกลับบ้านหมด (B)</div>
-                    <div class="input-row">
-                        <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_opd_d6_k6"></div>
-                        <div class="input-group"><label>เคสกลับมาซ้ำ (A)</label><input type="number" id="opd_d6_k6_A"></div>
-                        <div class="input-group"><label>เคสจำหน่ายทั้งหมด (B)</label><input type="number" id="opd_d6_k6_B"></div>
-                        <button class="calc-btn" onclick="calPercentZeroTarget('opd_d6_k6')">คำนวณ</button><div class="res-display">ผลลัพธ์: <span id="res_opd_d6_k6">-</span></div>
+                    <div class="kpi-header-title">ตัวชี้วัดด้านความปลอดภัยและหัตถการทางการพยาบาล</div>
+                    <div style="display:grid; gap:15px; margin-top:10px;">
+                        
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">1. ร้อยละของการคัดกรองผู้ใช้บริการถูกต้อง (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>คัดกรองถูก (คน)</label><input type="number" id="opd_d6_k1_A"></div>
+                            <div class="input-group"><label>ผู้ป่วยนอกรวม (คน)</label><input type="number" id="opd_d6_k1_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d6_k1', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k1">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">2. ผู้ป่วยวิกฤตคุกคามชีวิตได้รับการแก้ไขใน 4 นาที (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>แก้ไขทันใน 4 นาที (คน)</label><input type="number" id="opd_d6_k2_A"></div>
+                            <div class="input-group"><label>ผู้ป่วยวิกฤตทั้งหมด (คน)</label><input type="number" id="opd_d6_k2_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d6_k2', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k2">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">11. ผู้ป่วยมาตามนัดมีความรู้และทักษะดูแลตนเอง (เป้าหมาย 100%)</div>
+                            <div class="input-group"><label>ประเมินแล้วมีความรู้ (คน)</label><input type="number" id="opd_d6_k11_A"></div>
+                            <div class="input-group"><label>ผู้ป่วยมาตามนัดสะสม (คน)</label><input type="number" id="opd_d6_k11_B"></div>
+                            <button class="calc-btn" onclick="calPercent('opd_d6_k11', 100)">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k11">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-container">
+                    <div class="kpi-header-title">ตัวชี้วัดอัตราความเสี่ยงและความคลาดเคลื่อน (เป้าหมาย = 0%)</div>
+                    <div style="display:grid; gap:15px; margin-top:10px;">
+                        
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">3. อัตราการเกิดอาการทรุดลงโดยไม่ได้คาดการณ์</div>
+                            <div class="input-group"><label>เคสทรุด/Unplanned ICU (A)</label><input type="number" id="opd_d6_k3_A" value="0"></div>
+                            <div class="input-group"><label>ผู้ป่วยทั้งหมด (B)</label><input type="number" id="opd_d6_k3_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k3')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k3">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">4. อัตราการเกิดภาวะแทรกซ้อนที่ป้องกันได้</div>
+                            <div class="input-group"><label>เคสแทรกซ้อน (A)</label><input type="number" id="opd_d6_k4_A" value="0"></div>
+                            <div class="input-group"><label>ผู้ป่วยทั้งหมด (B)</label><input type="number" id="opd_d6_k4_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k4')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k4">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">5. อุบัติการณ์ไม่พึงประสงค์ระหว่างส่งต่อ/เคลื่อนย้าย</div>
+                            <div class="input-group"><label>เกิดเหตุไม่พึงประสงค์ (A)</label><input type="number" id="opd_d6_k5_A" value="0"></div>
+                            <div class="input-group"><label>จำนวนครั้งที่ส่งต่อรวม (B)</label><input type="number" id="opd_d6_k5_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k5')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k5">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">6. อัตรากลับเข้ารักษาซ้ำใน 48 ชม. โดยไม่ได้วางแผน</div>
+                            <div class="input-group"><label>กลับมารักษาซ้ำใน 48 ชม. (A)</label><input type="number" id="opd_d6_k6_A" value="0"></div>
+                            <div class="input-group"><label>เคสจำหน่ายกลับบ้านรวม (B)</label><input type="number" id="opd_d6_k6_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k6')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k6">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">7. ร้อยละความคลาดเคลื่อนบริหารยา/สารน้ำรุนแรง E-I</div>
+                            <div class="input-group"><label>คลาดเคลื่อนรุนแรง E-I (A)</label><input type="number" id="opd_d6_k7_A" value="0"></div>
+                            <div class="input-group"><label>ความคลาดเคลื่อนทั้งหมด (B)</label><input type="number" id="opd_d6_k7_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k7')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k7">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">8. จำนวนอุบัติการณ์ระบุตัวผู้ป่วยผิดคน (เป้าหมาย 0)</div>
+                            <div class="input-group"><label>จำนวนครั้งที่ผิดพลาด</label><input type="number" id="opd_d6_k8_A" value="0"></div>
+                            <button class="calc-btn" onclick="calZeroIncident('opd_d6_k8')">ตรวจสอบ</button><div class="res-display"><span id="res_opd_d6_k8">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">9. ร้อยละของการพลัดตกหกล้มรุนแรงระดับ E-I</div>
+                            <div class="input-group"><label>หกล้มรุนแรง E-I (A)</label><input type="number" id="opd_d6_k9_A" value="0"></div>
+                            <div class="input-group"><label>การพลัดตกหกล้มรวม (B)</label><input type="number" id="opd_d6_k9_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k9')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k9">-</span></div>
+                        </div>
+
+                        <div class="input-row">
+                            <div style="width:320px; font-size:0.9rem;">10. อัตราบาดเจ็บจากการจัดท่า ผูกยึด หรืออุปกรณ์</div>
+                            <div class="input-group"><label>จำนวนผู้ป่วยที่บาดเจ็บ (A)</label><input type="number" id="opd_d6_k10_A" value="0"></div>
+                            <div class="input-group"><label>ผู้ป่วยที่ถูกผูกยึด/ใช้เครื่องมือ (B)</label><input type="number" id="opd_d6_k10_B"></div>
+                            <button class="calc-btn" onclick="calZeroTarget('opd_d6_k10')">คำนวณ</button><div class="res-display"><span id="res_opd_d6_k10">-</span></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -183,7 +460,7 @@
                         <div class="input-group"><label>📅 วันที่บันทึก</label><input type="date" class="date-picker-input" id="date_ncd_k1"></div>
                         <div class="input-group"><label>เคสที่คุมได้ดี (A)</label><input type="number" id="ncd_k1_A"></div>
                         <div class="input-group"><label>เคสมาตรวจทั้งหมด (B)</label><input type="number" id="ncd_k1_B"></div>
-                        <button class="calc-btn" onclick="calPercent('ncd_k1', 80, true)">ประมวลผล</button><div class="res-display">ผลลัพธ์: <span id="res_ncd_k1">-</span></div>
+                        <button class="calc-btn" onclick="calPercent('ncd_k1', 80)">ประมวลผล</button><div class="res-display">ผลลัพธ์: <span id="res_ncd_k1">-</span></div>
                     </div>
                 </div>
             </div>
@@ -199,16 +476,19 @@
             const today = new Date().toISOString().split('T')[0];
             document.querySelectorAll('.date-picker-input').forEach(input => { input.value = today; });
         };
+
         function openIndicators(type) {
             document.getElementById('gatewaySection').style.display = 'none';
             if(type === 'opd') { document.getElementById('opdContainer').style.display = 'block'; } 
             else if(type === 'ncd') { document.getElementById('ncdContainer').style.display = 'block'; }
         }
+
         function showGateway() {
             document.getElementById('opdContainer').style.display = 'none';
             document.getElementById('ncdContainer').style.display = 'none';
             document.getElementById('gatewaySection').style.display = 'grid';
         }
+
         function switchTab(event, tabId) {
             const contents = document.getElementsByClassName('tab-content');
             for (let i = 0; i < contents.length; i++) { contents[i].classList.remove('active'); }
@@ -217,24 +497,85 @@
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
         }
-        function calPercent(prefix, targetScore, isGreaterTrue) {
+
+        // 1. ฟังก์ชันคำนวณร้อยละเป้าหมายทางบวก (เช่น >= 80%)
+        function calPercent(prefix, targetScore) {
             const a = parseFloat(document.getElementById(prefix + '_A').value);
             const b = parseFloat(document.getElementById(prefix + '_B').value);
             const res = document.getElementById('res_' + prefix);
             if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกตัวเลขให้ครบถ้วน และตัวหารต้องไม่เป็น 0'); return; }
             const score = (a * 100) / b;
             const rounded = score.toFixed(2);
-            if (score >= targetScore) { res.innerHTML = `<span style="color: #059669;">${rounded}% ✅</span>`; } 
-            else { res.innerHTML = `<span style="color: #dc2626;">${rounded}% ❌</span>`; }
+            if (score >= targetScore) { res.innerHTML = `<span style="color: #059669;">${rounded}% ✅ (ผ่านเกณฑ์ &ge; ${targetScore}%)</span>`; } 
+            else { res.innerHTML = `<span style="color: #dc2626;">${rounded}% ❌ (ไม่ผ่านเกณฑ์)</span>`; }
         }
-        function calPercentZeroTarget(prefix) {
+
+        // 2. ฟังก์ชันคำนวณร้อยละเป้าหมายต่ำกว่าที่กำหนด (เช่น < 5% หรือ <= 1%)
+        function calLessPercent(prefix, targetScore) {
             const a = parseFloat(document.getElementById(prefix + '_A').value);
             const b = parseFloat(document.getElementById(prefix + '_B').value);
             const res = document.getElementById('res_' + prefix);
             if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ครบถ้วน'); return; }
             const score = (a * 100) / b;
+            const rounded = score.toFixed(2);
+            if (score <= targetScore) { res.innerHTML = `<span style="color: #059669;">${rounded}% ✅ (ผ่านเกณฑ์ &le; ${targetScore}%)</span>`; }
+            else { res.innerHTML = `<span style="color: #dc2626;">${rounded}% ❌ (เกินเกณฑ์)</span>`; }
+        }
+
+        // 3. ฟังก์ชันคำนวณอัตราความเสี่ยงที่มีเป้าหมายเป็น 0%
+        function calZeroTarget(prefix) {
+            const a = parseFloat(document.getElementById(prefix + '_A').value);
+            const b = parseFloat(document.getElementById(prefix + '_B').value);
+            const res = document.getElementById('res_' + prefix);
+            if (isNaN(a) || isNaN(b)) { alert('กรุณากรอกข้อมูลให้ครบถ้วน'); return; }
+            if (b === 0 && a === 0) { res.innerHTML = `<span style="color: #059669;">0% ✅ (ไม่มีอุบัติการณ์)</span>`; return; }
+            if (b === 0) { alert('ตัวหารรวมต้องไม่เป็น 0'); return; }
+            const score = (a * 100) / b;
             if (score === 0) { res.innerHTML = `<span style="color: #059669;">0% ✅</span>`; } 
-            else { res.innerHTML = `<span style="color: #dc2626;">${score.toFixed(2)}% ❌</span>`; }
+            else { res.innerHTML = `<span style="color: #dc2626;">${score.toFixed(2)}% ❌ (เป้าหมายคือ 0%)</span>`; }
+        }
+
+        // 4. ฟังก์ชันตรวจสอบนับจำนวนครั้งของอุบัติการณ์เดี่ยว (เป้าหมาย = 0 ครั้ง)
+        function calZeroIncident(prefix) {
+            const a = parseFloat(document.getElementById(prefix + '_A').value);
+            const res = document.getElementById('res_' + prefix);
+            if (isNaN(a)) { alert('กรุณากรอกตัวเลข'); return; }
+            if (a === 0) { res.innerHTML = `<span style="color: #059669;">0 ครั้ง ✅ ผ่านเกณฑ์</span>`; }
+            else { res.innerHTML = `<span style="color: #dc2626;">${a} ครั้ง ❌ เกินเกณฑ์</span>`; }
+        }
+
+        // 5. ฟังก์ชันคำนวณสัดส่วนผลิตภาพพยาบาล (90% - 110%)
+        function calProductivity(prefix) {
+            const a = parseFloat(document.getElementById(prefix + '_A').value);
+            const b = parseFloat(document.getElementById(prefix + '_B').value);
+            const res = document.getElementById('res_' + prefix);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ถูกต้อง'); return; }
+            const score = (a * 100) / b;
+            const rounded = score.toFixed(2);
+            if (score >= 90 && score <= 110) { res.innerHTML = `<span style="color: #059669;">${rounded}% ✅ สมดุล (90-110%)</span>`; }
+            else if (score < 90) { res.innerHTML = `<span style="color: #eab308;">${rounded}% ⚠️ งานต่ำกว่ากำลังคน (<90%)</span>`; }
+            else { res.innerHTML = `<span style="color: #dc2626;">${rounded}% ❌ งานล้นภาระพยาบาล (>110%)</span>`; }
+        }
+
+        // 6. ฟังก์ชันหาค่าเฉลี่ยทั่วไป (เวลารอคอย)
+        function calAverage(prefix) {
+            const a = parseFloat(document.getElementById(prefix + '_A').value);
+            const b = parseFloat(document.getElementById(prefix + '_B').value);
+            const res = document.getElementById('res_' + prefix);
+            if (isNaN(a) || isNaN(b) || b === 0) { alert('กรุณากรอกข้อมูลให้ถูกต้อง'); return; }
+            res.innerHTML = `<span style="color: #0f766e;">${(a / b).toFixed(2)} นาที/ราย</span>`;
+        }
+
+        // 7. ฟังก์ชันรวมสำหรับตรวจเช็คข้อร้องเรียน มิติ 3 (ข้อ 4-7)
+        function checkComplaints() {
+            const k4 = parseFloat(document.getElementById('opd_d3_k4').value) || 0;
+            const k5 = parseFloat(document.getElementById('opd_d3_k5').value) || 0;
+            const k6 = parseFloat(document.getElementById('opd_d3_k6').value) || 0;
+            const k7 = parseFloat(document.getElementById('opd_d3_k7').value) || 0;
+            const res = document.getElementById('res_complaints');
+            const total = k4 + k5 + k6 + k7;
+            if (total === 0) { res.innerHTML = `<span style="color: #059669;">รวมเป็น 0 รายเรื่อง ✅ ผ่านเกณฑ์</span>`; }
+            else { res.innerHTML = `<span style="color: #dc2626;">พบข้อร้องเรียนรวม ${total} เรื่อง ❌</span>`; }
         }
     </script>
 </body>
