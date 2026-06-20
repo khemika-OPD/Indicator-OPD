@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPD Takhli - 6 Dimensions Indicators</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #0d9488;
+            color: #ffffff;
+            padding: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .back-btn {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.875rem;
+            background-color: #0f766e;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+        
+        main {
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        /* ส่วนของกล่อง Login */
+        .login-card {
+            background-color: #ffffff;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-top: 40px;
+        }
+        .login-card h2 {
+            margin-bottom: 8px;
+            font-size: 1.25rem;
+            text-align: center;
+            color: #111827;
+        }
+        .login-card p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #0d9488;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #0d9488;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-submit:hover {
+            background-color: #0f766e;
+        }
+        .error-msg {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        /* ส่วนของระบบ Dashboard สลับแท็บ */
+        .dashboard-container {
+            display: none;
+            max-width: 1000px;
+            width: 100%;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dashboard-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .dashboard-header h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+        }
+
+        /* โครงสร้างเมนูแถบแท็บ (6 มิติ) */
+        .tabs-menu {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            padding: 10px 16px;
+            background-color: #e5e7eb;
+            color: #4b5563;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background-color: #0d9488;
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* โครงสร้างตารางแสดงรายการตัวชี้วัด */
+        .tab-content {
+            display: none;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .m集中-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #0f766e;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-b: 2px solid #ccfbf1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .kpi-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 12px;
+        }
+        .kpi-table th, .kpi-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+        .kpi-table th {
+            background-color: #f9fafb;
+            color: #4b5563;
+            font-weight: bold;
+            width: 75%;
+        }
+        .kpi-table tr:hover {
+            background-color: #f9fafb;
+        }
+        .looker-link {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        .looker-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 16px;
+            font-size: 0.875rem;
+            border-top: 1px solid #374151;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="header-title">
+                <h1>1. แดชบอร์ดระบบงานตัวชี้วัดกองการพยาบาล</h1>
+            </div>
+            <a href="index.html" class="back-btn">⬅️ กลับหน้าหลัก</a>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        
+        <!-- ส่วนที่ 1: ระบบตรวจสอบสิทธิ์ (Login) -->
+        <div id="loginSection" class="login-card">
+            <h2>เข้าสู่ระบบตรวจสอบข้อมูล</h2>
+            <p>กรุณาลงชื่อใช้งานเพื่อเข้าถึงข้อมูล 6 มิติคุณภาพ</p>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">ชื่อผู้ใช้งาน (Username)</label>
+                    <input type="text" id="username" class="form-control" placeholder="opdadmin" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">รหัสผ่าน (Password)</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-submit">เข้าสู่ระบบ ➔</button>
+                <div id="errorMsg" class="error-msg">ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง!</div>
+            </form>
+        </div>
+
+        <!-- ส่วนที่ 2: ระบบรายงานตัวชี้วัด 6 มิติ (แสดงหลัง Login สำเร็จ) -->
+        <div id="dashboardSection" class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>ศูนย์รวมข้อมูลตัวชี้วัดผลลัพธ์พยาบาลผู้ป่วยนอก & NCD</h2>
+            </div>
+
+            <!-- เมนูแถบสำหรับเลือกสลับดูมิติทั้ง 6 -->
+            <div class="tabs-menu">
+                <button class="tab-btn active" onclick="switchTab(event, 'dim1')">มิติที่ 1 นำองค์กร</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim2')">มิติที่ 2 ประสิทธิภาพ</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim3')">มิติที่ 3 ผู้ใช้บริการ</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim4')">มิติที่ 4 บุคลากร</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim5')">มิติที่ 5 ระบบงาน</button>
+                <button class="tab-btn" onclick="switchTab(event, 'dim6')">มิติที่ 6 การบริการพยาบาล</button>
+            </div>
+
+            <!-- รายละเอียดเนื้อหาแต่ละมิติ (อ้างอิงตรงตามคู่มือกองการพยาบาล หน้า 91-92) -->
+            
+            <!-- แท็บมิติที่ 1 -->
+            <div id="dim1" class="tab-content active">
+                <div class="m集中-title">📢 มิติที่ 1 ผลลัพธ์ด้านการนําองค์กร</div>
+                <table class="kpi-table">
+                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. ร้อยละของตัวชี้วัดวิสัยทัศน์ที่บรรลุเป้าหมาย</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>2. ร้อยละของโครงการ/กิจกรรมดําเนินการตามกระบวนการควบคุมภายในที่มีคะแนนความเสี่ยงลดลง</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>3. ร้อยละของบุคลากรพยาบาลที่มีผลการประเมินจริยธรรมจรรยาบรรณวิชาชีพผ่านเกณฑ์ที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- แท็บมิติที่ 2 -->
+            <div id="dim2" class="tab-content">
+                <div class="m集中-title">⚡ มิติที่ 2 ผลลัพธ์ด้านประสิทธิภาพ</div>
+                <table class="kpi-table">
+                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. ผลิตภาพของงานการพยาบาลผู้ป่วยนอก (Nursing Productivity)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>2. ระยะเวลารอคอยบริการพยาบาลผู้ป่วยนอกเฉลี่ย</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>3. ร้อยละของบุคลากรพยาบาลที่มีจํานวนชั่วโมงการปฏิบัติงานการพยาบาลเฉลี่ยมากกว่า 60 ชั่วโมงต่อสัปดาห์</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>4. ร้อยละของอุบัติการณ์/ความเสี่ยงทางการพยาบาลได้รับการจัดการทันเวลาตามที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- แท็บมิติที่ 3 -->
+            <div id="dim3" class="tab-content">
+                <div class="m集中-title">❤️ มิติที่ 3 ผลลัพธ์ด้านผู้ใช้บริการ</div>
+                <table class="kpi-table">
+                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. ร้อยละความพึงพอใจของผู้ใช้บริการต่อบริการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>2. ร้อยละความพึงพอใจของผู้มีส่วนได้ส่วนเสียต่อหน่วยงานบริการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>3. ร้อยละความไม่พึงพอใจของผู้ใช้บริการต่อบริการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>4. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับสิทธิหรือการละเมิดสิทธิผู้ใช้บริการ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>5. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับสิทธิหรือการละเมิดสิทธิผู้ใช้บริการกลุ่มเฉพาะ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>6. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับพฤติกรรมบริการของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>7. จํานวนข้อร้องเรียนของผู้ใช้บริการเกี่ยวกับการละเมิดข้อมูลส่วนบุคคล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>8. ร้อยละของการแก้ไขและ/หรือการตอบกลับข้อร้องเรียนของผู้ใช้บริการ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- แท็บมิติที่ 4 -->
+            <div id="dim4" class="tab-content">
+                <div class="m集中-title">🧑‍⚕️ มิติที่ 4 ผลลัพธ์ด้านบุคลากร</div>
+                <table class="kpi-table">
+                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. ร้อยละความผูกพันของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>2. ร้อยละความพึงพอใจในงานและบรรยากาศองค์กรของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>3. ร้อยละการโอนย้ายและลาออกของบุคลากรพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>4. ร้อยละของบุคลากรพยาบาลมีสมรรถนะตามบทบาทหน้าที่และสมรรถนะเฉพาะตามเกณฑ์ที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>5. ร้อยละของบุคลากรพยาบาลได้รับการอบรมฟื้นฟูทักษะการช่วยฟื้นคืนชีพขั้นพื้นฐานอย่างน้อย 1 ครั้งต่อปี</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>6. ร้อยละของบุคลากรพยาบาลได้รับการอบรมฟื้นฟูทักษะการช่วยฟื้นคืนชีพขั้นสูงอย่างน้อย 1 ครั้งต่อปี</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>7. ร้อยละของบุคลากรพยาบาลได้รับการอบรมฟื้นฟูทักษะการป้องกันและควบคุมการติดเชื้อในโรงพยาบาลอย่างน้อย 1 ครั้งต่อปี</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>8. ร้อยละของบุคลากรพยาบาลที่ได้รับการตรวจสุขภาพประจําปีและตามความเสี่ยงจากการทํางาน</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>9. ร้อยละของบุคลากรพยาบาลที่เจ็บป่วยหรือเกิดอุบัติเหตุจากการปฏิบัติงานได้รับการดูแลตามแนวทางการดูแลรักษา</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- แท็บมิติที่ 5 -->
+            <div id="dim5" class="tab-content">
+                <div class="m集中-title">⚙️ มิติที่ 5 ผลลัพธ์ด้านระบบงานและกระบวนการสําคัญ</div>
+                <table class="kpi-table">
+                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. ร้อยละของบุคลากรพยาบาลที่ปฏิบัติตามแนวทางปฏิบัติการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>2. ร้อยละของการบันทึกทางการพยาบาลตามเกณฑ์มาตรฐานการพยาบาลในโรงพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>3. ร้อยละของอุบัติการณ์ภัยพิบัติหรือภาวะฉุกเฉินได้รับการจัดการตามกระบวนการที่กําหนด</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>4. ร้อยละของฐานข้อมูลจําเป็นตามมาตรฐานการพยาบาลในโรงพยาบาลที่นํามาใช้ประโยชน์ทางการพยาบาล</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>5. ร้อยละขององค์ความรู้และ/หรือนวัตกรรมทางการพยาบาลที่พัฒนาด้วยการจัดการความรู้และนําไปใช้</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>6. จํานวนอุบัติการณ์ความไม่พร้อมต่อการช่วยชีวิตฉุกเฉิน</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- แท็บมิติที่ 6 -->
+            <div id="dim6" class="tab-content">
+                <div class="m集中-title">🩺 มิติที่ 6 ผลลัพธ์ด้านการบริการพยาบาล (Focus: OPD & NCD Outcomes)</div>
+                <table class="kpi-table">
+                    <thead><tr><th>รายการตัวชี้วัดตามมาตรฐาน</th><th>ลิงก์รายงาน (Looker Studio)</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. ร้อยละของการคัดกรองผู้ใช้บริการถูกต้อง</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>2. ร้อยละของผู้ป่วยที่อยู่ในภาวะคุกคามชีวิตได้รับการแก้ไขทันทีภายใน 4 นาที</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>3. อัตราการเกิดอาการเปลี่ยนแปลงของผู้ป่วยโดยไม่ได้คาดการณ์</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>4. อัตราการเกิดภาวะแทรกซ้อนที่ป้องกันได้ (เช่น เบาหวาน/ความดันโลหิตสูง คลินิก NCD)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>5. อัตราการเกิดอุบัติการณ์ไม่พึงประสงค์ระหว่างส่งต่อหรือเคลื่อนย้าย</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>6. อัตราการกลับเข้ารักษาซ้ําภายใน 48 ชั่วโมงโดยไม่ได้วางแผน (OPD Re-visit)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>7. ร้อยละของความคลาดเคลื่อนจากการบริหารยา/สารน้ํามีความรุนแรงระดับ E-I</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>8. จํานวนอุบัติการณ์การระบุตัวผู้ป่วยผิดคน</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>9. ร้อยละของการพลัดตกหกล้มมีความรุนแรงระดับ E-I</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>10. อัตราการเกิดการบาดเจ็บจากการจัดท่า ผูกยึด หรือการใช้อุปกรณ์และเครื่องมือ</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                        <tr><td>11. ร้อยละของผู้ป่วยที่มาตรวจตามนัดมีความรู้และทักษะการจัดการสุขภาพตนเอง (Self-management คลินิก NCD)</td><td><a href="#" target="_blank" class="looker-link">เปิดรายงาน ↗️</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 งานผู้ป่วยนอก โรงพยาบาลตาคลี | พัฒนาโดย Khemika-OPD Takhli (Khemika Pongsri)</p>
+    </footer>
+
+    <!-- ระบบ JavaScript ควบคุมหน้าและการสลับแท็บ -->
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            // ตั้งบัญชีเข้าใช้งานจำลองสำหรับหน่วยงาน
+            const correctUsername = "opdadmin";
+            const correctPassword = "takhli2027";
+            
+            if (usernameInput === correctUsername && passwordInput === correctPassword) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function switchTab(event, tabId) {
+            // ซ่อนข้อมูลแท็บทั้งหมดก่อน
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            // ปล่อยปุ่มกดแท็บกลับสู่สภาวะปกติ
+            const tabButtons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            // แสดงแท็บที่เลือกและเพิ่มสถานะ Active ให้ปุ่มที่คลิก
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
